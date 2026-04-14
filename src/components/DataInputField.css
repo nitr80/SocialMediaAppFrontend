@@ -1,0 +1,17 @@
+.data-input-label {
+  font-size: large;
+  padding-left: 5px;
+  color: rgb(60, 60, 60);
+}
+
+.data-input-field {
+    border-width: 1px;
+    border-radius: 8px;
+    width: 250px;
+    height: 40px;
+    font-size: medium;
+    padding-left: 15px;
+    background-color: rgb(248, 245, 245);
+    margin-top: 8px;
+    margin-bottom: 12px;
+}

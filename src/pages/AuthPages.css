@@ -6,3 +6,12 @@
     margin-left: 24px;
     margin-right: 24px;
 }
+
+.auth-link {
+    display: flex;
+    justify-content: center;
+    font-size: medium;
+    color:rgb(18, 147, 147);
+    text-decoration: none;
+    margin-top: 16px;
+}

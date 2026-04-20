@@ -3,6 +3,7 @@ import AuthButton from "../components/AuthButton";
 import DataInputField from "../components/DataInputField";
 import { useAuth } from "../hooks/useAuth";
 import "./AuthPages.css";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -10,11 +11,13 @@ const LoginPage = () => {
 
   const { user, login } = useAuth();
 
+  const navigate = useNavigate();
+
   return (
     <div className="page">
       <div className="card">
         <div className="auth-page-container">
-          <p className="auth-page-title">Register</p>
+          <p className="auth-page-title">Login</p>
           <DataInputField
             label="Username:"
             value={username}
@@ -30,11 +33,13 @@ const LoginPage = () => {
             onClick={async () => {
               try {
                 await login(username, password);
+                navigate("/feed", {replace: true});
               } catch (err: any) {
                 alert(err.response?.data?.message ?? "Login failed!");
               }
             }}
           ></AuthButton>
+          <Link to="/register" className="auth-link">Don't have an account? Register</Link>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import AuthButton from "../components/AuthButton";
 import DataInputField from "../components/DataInputField";
 import { useAuth } from "../hooks/useAuth";
 import "./AuthPages.css";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
@@ -11,6 +12,8 @@ const RegisterPage = () => {
   const [secondPassword, setSecondPassword] = useState("");
 
   const { token, user, register } = useAuth();
+
+  const navigate = useNavigate();
 
   function passwordIncludesNumber() {
     return (
@@ -57,6 +60,14 @@ const RegisterPage = () => {
     return null;
   }
 
+  function validateEmail() {
+    if (!(email.includes("@"))) {
+      return "Invalid Email!";
+    }
+
+    return null;
+  }
+
   return (
     <div className="page">
       <div className="card">
@@ -86,18 +97,27 @@ const RegisterPage = () => {
             buttonText="Register"
             onClick={async () => {
               const passwordError = validatePassword();
-              if (passwordError != null)
-              {
+              const emailError = validateEmail();
+              if (passwordError != null) {
                 alert(passwordError);
+                return;
+              }
+              if (emailError != null)
+              {
+                alert(emailError);
                 return;
               }
               try {
                 await register(username, email, password);
+                navigate("/feed", { replace: true });
               } catch (err: any) {
                 alert(err.response?.data?.message ?? "Registering failed!");
               }
             }}
           ></AuthButton>
+          <Link to="/" className="auth-link">
+            Already have an account? Log in
+          </Link>
         </div>
       </div>
     </div>

@@ -1,0 +1,39 @@
+.post-card{
+    display: flex;
+    /* justify-content:; */
+    width: 350px;
+    height: auto;
+    background-color: rgb(215, 252, 252);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 8px;
+}
+
+.profile-picture{
+    width: 60px;
+    height: 60px;
+    min-height: 60px;
+    min-width: 60px;
+    background-color: grey;
+    border-radius: 100%;
+    margin: 4px;
+    margin-right: 12px;
+}
+
+.author-title{
+    margin: 4px;
+    font-weight: bold;
+    font-size: large;
+}
+
+.creation-date-title{
+    margin: 4px;
+    color: rgb(103, 103, 103);
+}
+
+.post-content-text{
+    margin: 4px;
+    margin-top: 12px;
+    word-wrap: break-word;
+    max-width: 250px;
+}

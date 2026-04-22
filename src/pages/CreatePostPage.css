@@ -1,0 +1,9 @@
+.post-content-text-area {
+  width: 350px;
+  height: 100px;
+  min-height: 40px;
+  max-height: 70vh; 
+
+  padding: 15px;
+  resize: vertical;
+}

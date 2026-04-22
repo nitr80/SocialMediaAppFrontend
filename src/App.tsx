@@ -1,26 +1,24 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import './App.css'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-import FeedPage from './pages/FeedPage';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import FeedPage from "./pages/FeedPage";
+import CreatePostPage from "./pages/CreatePostPage";
 
 function App() {
-
-
-
-      return (
+  return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/feed" element={<FeedPage/>} />
+        <Route path="/feed" element={<FeedPage />} />
+        <Route path="/create-post" element={<CreatePostPage />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
-export default App
-
+export default App;
 
 // Frontend/
 // │

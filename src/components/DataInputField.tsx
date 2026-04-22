@@ -17,7 +17,7 @@ const DataInputField = ({ label, value, setValue }: Props) => {
         type="text"
         id="fdata"
         name="fdata"
-        className="data-input-field"
+        className="input-field data-input-field"
         value={value}
         onChange={(e) => {
           setValue(e.target.value);

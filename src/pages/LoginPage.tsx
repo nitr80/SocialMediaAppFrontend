@@ -9,7 +9,7 @@ const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { user, login } = useAuth();
+  const { login } = useAuth();
 
   const navigate = useNavigate();
 
@@ -33,13 +33,15 @@ const LoginPage = () => {
             onClick={async () => {
               try {
                 await login(username, password);
-                navigate("/feed", {replace: true});
+                navigate("/feed", { replace: true });
               } catch (err: any) {
                 alert(err.response?.data?.message ?? "Login failed!");
               }
             }}
           ></AuthButton>
-          <Link to="/register" className="auth-link">Don't have an account? Register</Link>
+          <Link to="/register" className="auth-link">
+            Don't have an account? Register
+          </Link>
         </div>
       </div>
     </div>

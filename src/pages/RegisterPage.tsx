@@ -11,7 +11,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [secondPassword, setSecondPassword] = useState("");
 
-  const { token, user, register } = useAuth();
+  const { register } = useAuth();
 
   const navigate = useNavigate();
 
@@ -61,7 +61,7 @@ const RegisterPage = () => {
   }
 
   function validateEmail() {
-    if (!(email.includes("@"))) {
+    if (!email.includes("@")) {
       return "Invalid Email!";
     }
 
@@ -102,8 +102,7 @@ const RegisterPage = () => {
                 alert(passwordError);
                 return;
               }
-              if (emailError != null)
-              {
+              if (emailError != null) {
                 alert(emailError);
                 return;
               }

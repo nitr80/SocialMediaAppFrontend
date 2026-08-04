@@ -1,10 +1,10 @@
 import type { User } from "./user";
 
-export interface Post {
+export interface Comment{
     id: number;
     content: string;
     createdAt: string;
     likeCount: number;
-    commentCount: number;
+    postId: number;
     author: User;
 }

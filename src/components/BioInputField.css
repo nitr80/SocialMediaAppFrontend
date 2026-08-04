@@ -1,0 +1,9 @@
+.bio-input-field {
+  width: 320px;
+  height: auto;
+  resize: vertical;
+  line-height: 20px;
+
+  overflow-y: auto;
+  word-wrap: break-word;
+}

@@ -11,7 +11,7 @@ export const getAllPosts = () => {
 };
 
 export const createPost = (data: { content: string }) => {
-  return api.post(postsUrl, data);
+  api.post(postsUrl, data);
 };
 
 export const deletePost = (id: number) => {

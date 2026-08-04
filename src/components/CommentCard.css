@@ -1,0 +1,11 @@
+.comment-card {
+  display: flex;
+  /* justify-content:; */
+  width: 350px;
+  height: auto;
+  background-color: rgb(215, 252, 252);
+  border-radius: 12px;
+  padding: 16px;
+  padding-bottom: 6px;
+  margin: 8px;
+}

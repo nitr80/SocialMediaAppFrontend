@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { getAllPosts as getAllPostsApi } from "../api/postsApi";
 import { createPost as createPostApi } from "../api/postsApi";
+import { getPostById as getPostByIdApi } from "../api/postsApi";
 import type { Post } from "../types/post";
 
 export const usePosts = () => {
@@ -14,18 +15,18 @@ export const usePosts = () => {
       return res.data;
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to load posts");
-      throw(err);
+      throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  const createPost = async (content: string): Promise<Post> => {
+  const createPost = async (content: string) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await createPostApi({ content });
-      return res.data;
+      await createPostApi({ content });
+      // return res.data;
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to create post");
       throw err;
@@ -34,5 +35,19 @@ export const usePosts = () => {
     }
   };
 
-  return { postError, postLoading, loadAllPosts, createPost };
+  const getPostById = async (id: number): Promise<Post> => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await getPostByIdApi(id);
+      return res.data;
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Failed to get the post");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { postError, postLoading, loadAllPosts, createPost, getPostById };
 };

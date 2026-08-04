@@ -1,26 +1,29 @@
 import { useState } from "react";
-import "./PostCard.css";
 import { useLikes } from "../hooks/useLikes";
-import { useNavigate } from "react-router-dom";
 import { toTimeOrDate } from "../utils/dateUtils";
+
+import "./ExpandedPost.css";
+import "./PostCard.css";
 import type { Post } from "../types/post";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   post: Post;
   isLiked: boolean;
   // profilePicture
 }
-const PostCard = ({ post, isLiked }: Props) => {
+
+const ExpandedPost = ({ post, isLiked }: Props) => {
   const [liked, setLiked] = useState(isLiked);
   const [localLikeCount, setLocalLikeCount] = useState(post.likeCount);
-  const { loading, error, likePost, unlikePost, getLiked, getAllLiked } =
-    useLikes();
+
+  const { likePost, unlikePost } = useLikes();
   const navigate = useNavigate();
 
   const API_URL = import.meta.env.VITE_API_URL;
 
   return (
-    <div className="post-card">
+    <div className="expanded-post-container">
       <img
         className="profile-picture"
         src={
@@ -33,39 +36,32 @@ const PostCard = ({ post, isLiked }: Props) => {
           navigate(`/profile/${post.author.id}`);
         }}
       />
-
-      <div
-        className="post-text-container"
-        onClick={() => {
-          navigate(`/post-details/${post.id}`);
-        }}
-      >
+      <div>
         <p className="creation-date-title">{toTimeOrDate(post.createdAt)}</p>
         <p className="author-title">{post.author.username}</p>
-        <p className="post-content-text">{post.content}</p>
+        <p className="post-content-text-detailed">{post.content}</p>
 
         <div className="bottom-icon-bar">
-          <div className="like-container">
-            <button
-              className="like-button"
-              onClick={async (e) => {
-                e.stopPropagation();
-                try {
-                  if (!liked) {
-                    await likePost(post.id);
-                    setLocalLikeCount(localLikeCount + 1);
-                  } else {
-                    await unlikePost(post.id);
-                    setLocalLikeCount(localLikeCount - 1);
-                  }
-                  setLiked(!liked);
-                } catch (err: any) {
-                  alert(
-                    err.response?.data?.message ?? "Failed to like post card",
-                  );
+          <div
+            className="like-container"
+            onClick={async () => {
+              try {
+                if (!liked) {
+                  await likePost(post.id);
+                  setLocalLikeCount(localLikeCount + 1);
+                } else {
+                  await unlikePost(post.id);
+                  setLocalLikeCount(localLikeCount - 1);
                 }
-              }}
-            >
+                setLiked(!liked);
+              } catch (err: any) {
+                alert(
+                  err.response?.data?.message ?? "Failed to like post card",
+                );
+              }
+            }}
+          >
+            <button className="like-button">
               <img
                 src={liked ? "/filled_heart_icon.png" : "/empty_heart_icon.png"}
                 alt="Like"
@@ -73,7 +69,6 @@ const PostCard = ({ post, isLiked }: Props) => {
             </button>
             <p className="like-count">{localLikeCount}</p>
           </div>
-
           <div className="comment-icon-container">
             <img src="/comment_icon.png" alt="Comment" />
             <p className="comment-count">{post.commentCount}</p>
@@ -84,4 +79,4 @@ const PostCard = ({ post, isLiked }: Props) => {
   );
 };
 
-export default PostCard;
+export default ExpandedPost;

@@ -1,0 +1,91 @@
+.profile-card {
+  display: flex;
+  /* justify-content:; */
+  /* justify-content:; */
+  /* align-items; */
+  width: 500px;
+  height: fit-content;
+  background-color: rgb(215, 252, 252);
+  border-radius: 12px;
+  padding: 16px;
+  padding-bottom: 6px;
+  margin: 8px;
+}
+
+.profile-picture-container {
+  width: 100px;
+  height: 100px;
+  min-height: 60px;
+  min-width: 60px;
+  border-radius: 100%;
+  margin: 12px;
+  margin-right: 12px;
+  position: relative;
+
+  cursor: pointer;
+}
+
+.profile-picture-big {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  object-fit: cover;
+}
+
+.profile-picture-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  border-radius: 100%;
+}
+
+.profile-picture-container:hover .profile-picture-overlay {
+  opacity: 1;
+}
+
+.user-title-big {
+  margin: 8px;
+  font-weight: bold;
+  font-size: x-large;
+}
+
+.user-email-big {
+  margin: 8px;
+  /* font-weight: bold; */
+  font-size: x-large;
+}
+
+.user-bio {
+  margin: 8px;
+  max-width: 350px;
+  /* font-weight: bold; */
+  font-size: large;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.edit-bio-text {
+  margin: 8px;
+  /* font-weight: bold; */
+  font-size: small;
+  color: blue;
+  cursor: pointer;
+}
+
+.edit-bio-text:hover {
+  color: rgb(106, 106, 255);
+}
+
+.logout-container
+{
+  display: flex;
+  justify-content: space-between;
+}

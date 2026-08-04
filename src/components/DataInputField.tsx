@@ -3,7 +3,7 @@ import "./DataInputField.css";
 interface Props {
   label: string;
   value: string;
-  setValue: (string) => void;
+  setValue: (value: string) => void;
 }
 
 const DataInputField = ({ label, value, setValue }: Props) => {

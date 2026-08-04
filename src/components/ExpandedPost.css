@@ -1,0 +1,23 @@
+.expanded-post-container {
+  display: flex;
+  justify-content: start;
+  width: 500px;
+  height: auto;
+  /* background-color: rgb(215, 252, 252); */
+  /* border-radius: 12px; */
+  border-bottom: 1px ridge rgb(162, 162, 162);
+  /* border-style: ridge; */
+
+  padding: 16px;
+  padding-bottom: 6px;
+  margin: 8px;
+}
+
+.post-content-text-detailed {
+  margin: 4px;
+  margin-top: 12px;
+  word-wrap: break-word;
+  max-width: 400px;
+
+  white-space: pre-wrap;
+}

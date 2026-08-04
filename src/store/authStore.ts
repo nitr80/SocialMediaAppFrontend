@@ -1,19 +1,36 @@
 import { create } from "zustand";
 import type { User } from "../types/user";
+import { persist } from "zustand/middleware";
+import { refreshToken } from "../api/authService";
 
 interface AuthStore {
-  token: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
   user: User | null;
 
-  setAuth: (token: string, user: User) => void;
+  setAuth: (accessToken: string, refreshToken: string, user: User) => void;
+
+  updateTokens: (accessToken: string, refreshToken: string) => void;
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  token: null,
-  user: null,
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set) => ({
+      accessToken: null,
+      refreshToken: null,
+      user: null,
 
-  setAuth: (token, user) => set({ token, user }),
+      setAuth: (accessToken, refreshToken, user) =>
+        set({ accessToken, refreshToken, user }),
 
-  logout: () => set({ token: null, user: null }),
-}));
+      updateTokens: (accessToken: string, refreshToken: string) =>
+        set({ accessToken, refreshToken }),
+
+      logout: () => set({ accessToken: null, refreshToken: null, user: null }),
+    }),
+    {
+      name: "auth-storage",
+    },
+  ),
+);

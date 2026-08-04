@@ -4,6 +4,7 @@ import "./CreatePostPage.css";
 import AuthButton from "../components/AuthButton";
 import { useNavigate } from "react-router-dom";
 import { usePosts } from "../hooks/usePosts";
+import BackToFeedButton from "../components/BackToFeedButton";
 
 const CreatePostPage = () => {
   const [text, setText] = useState("");
@@ -15,6 +16,7 @@ const CreatePostPage = () => {
 
   return (
     <div className="page">
+      <BackToFeedButton></BackToFeedButton>
       <div className="card">
         <PostContentTextArea
           label={label}

@@ -1,0 +1,21 @@
+.back-to-feed-button-container {
+  position: fixed;
+  top: 2%;
+  left: 25%;
+
+  display: flex;
+  justify-content: center;
+
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.back-to-feed-button {
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  font-size: x-large;
+  background-color: rgb(215, 252, 252);
+  border-radius: 100%;
+  border-width: 0px;
+}

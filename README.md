@@ -69,7 +69,7 @@ Create the appropriate environment configuration before starting the application
 
 This frontend communicates with the corresponding ASP.NET Core backend:
 
-**Social Media Backend:** `<backend-repository-url>`
+**Social Media Backend:** `https://github.com/nitr80/SocialMediaAppBackend`
 
 ## Purpose
 

@@ -1,73 +1,76 @@
-# React + TypeScript + Vite
+# SocialMediaAppFrontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern frontend for a social media application, built with **React and TypeScript**. The application communicates with an ASP.NET Core REST API for authentication, posts, and other social media functionality.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- User registration and login
+- Authentication state management
+- Automatic access-token handling
+- Automatic token refresh
+- Create and view posts
+- Like and unlike posts
+- Client-side routing
+- REST API integration
+- Responsive user interface
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React**
+- **TypeScript**
+- **Vite**
+- **Zustand** – state management
+- **Axios** – HTTP client
+- **React Router** – client-side routing
 
-## Expanding the ESLint configuration
+## Authentication
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Authentication is handled through the backend's JWT-based authentication system.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+The frontend manages authentication state using **Zustand** and communicates with the backend using **Axios**.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Axios interceptors are used to attach authentication tokens to API requests and handle expired access tokens by requesting a new token through the refresh-token mechanism.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Running the Application
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/)
+- npm
+
+Clone the repository and navigate to the project directory:
+
+```bash
+git clone <repository-url>
+cd <repository-directory>
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Install dependencies:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at the URL provided by Vite.
+
+## Configuration
+
+The frontend requires the URL of the backend API to be configured for local development.
+
+Create the appropriate environment configuration before starting the application.
+
+## Related Project
+
+This frontend communicates with the corresponding ASP.NET Core backend:
+
+**Social Media Backend:** `<backend-repository-url>`
+
+## Purpose
+
+This project was developed as a personal project to gain practical experience with **React, TypeScript, state management, REST API integration, and authentication in a full-stack application**.

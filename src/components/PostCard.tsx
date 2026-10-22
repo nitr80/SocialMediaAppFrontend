@@ -13,7 +13,7 @@ interface Props {
 const PostCard = ({ post, isLiked }: Props) => {
   const [liked, setLiked] = useState(isLiked);
   const [localLikeCount, setLocalLikeCount] = useState(post.likeCount);
-  const { loading, error, likePost, unlikePost, getLiked, getAllLiked } =
+  const { loading, error, likePost, unlikePost, getAllLiked } =
     useLikes();
   const navigate = useNavigate();
 

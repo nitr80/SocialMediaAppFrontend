@@ -1,11 +1,9 @@
 import api from "./axios";
 
-const commentsUrl = "/comments";
-
 export const getAllCommentsByPostId = (postId: number) => {
-  return api.get(`${commentsUrl}/${postId}`);
+  return api.get(`/Posts/${postId}/Comments`);
 };
 
-export const createComment = (data: { content: string; postId: number }) => {
-  return api.post(`${commentsUrl}`, data);
+export const createComment = (data: { content: string}, postId: number) => {
+  return api.post(`/Posts/${postId}/Comments`, data);
 };

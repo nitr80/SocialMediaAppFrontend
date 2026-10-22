@@ -1,19 +1,17 @@
 import api from "./axios";
 
-const commentLikesUrl = "/commentLikes";
-
 export const getLiked = (commentId: number) => {
-  return api.get(`${commentLikesUrl}/liked/${commentId}`);
+  return api.get(`Comments/${commentId}/Likes`);
 };
 
 export const getAllLiked = (postId: number) => {
-  return api.get(`${commentLikesUrl}/${postId}/liked`);
+  return api.get(`Comments/me/${postId}/Likes`);
 };
 
 export const likeComment = (commentId: number) => {
-    return api.post(`${commentLikesUrl}/like/${commentId}`)
+    return api.post(`Comments/${commentId}/Likes`)
 };
 
 export const unlikeComment = (commentId: number) => {
-    return api.post(`${commentLikesUrl}/unlike/${commentId}`)
+    return api.delete(`Comments/${commentId}/Likes`)
 };

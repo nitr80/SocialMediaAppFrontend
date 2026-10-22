@@ -25,7 +25,7 @@ export const useComments = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await createCommentApi({ content, postId });
+      const res = await createCommentApi({ content }, postId);
       return res.data;
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to create comment");

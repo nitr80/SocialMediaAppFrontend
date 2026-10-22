@@ -6,17 +6,17 @@ export const register = (data: {
   email: string;
   password: string;
 }) => {
-  return api.post("/auth/register", data);
+  return api.post("/Auth/Register", data);
 };
 
 export const login = (data: { username: string; password: string }) => {
-  return api.post("/auth/login", data);
+  return api.post("/Auth/Login", data);
 };
 
 export const refresh = (data: { refreshToken: string }) => {
-  return axiosPublic.post("/auth/refresh", data);
+  return axiosPublic.post("/Auth/Refresh", data);
 };
 
 export const logout = () => {
-  return api.post("/auth/logout");
+  return api.post("/Auth/Logout");
 };

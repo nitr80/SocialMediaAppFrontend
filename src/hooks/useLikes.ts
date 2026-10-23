@@ -12,7 +12,7 @@ export const useLikes = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await likePostApi(postId);
+      await likePostApi(postId);
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to Like the Post");
       throw err;
@@ -25,7 +25,7 @@ export const useLikes = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await unlikePostApi(postId);
+      await unlikePostApi(postId);
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to Unlike the Post");
       throw err;

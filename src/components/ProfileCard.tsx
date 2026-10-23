@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { User } from "../types/user";
 import BioInputField from "./BioInputField";
 import { useUsers } from "../hooks/useUsers";
@@ -6,6 +6,7 @@ import type { Bio } from "../types/bio";
 import { useAuthStore } from "../store/authStore";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { useFollows } from "../hooks/useFollows";
 
 interface Props {
   user: User;
@@ -19,9 +20,12 @@ const ProfileCard = ({ user }: Props) => {
   const [editBioText, setEditBioText] = useState(EDIT_BIO_TEXT);
   const [bioText, setBioText] = useState(user.bio ?? "No bio yet");
   const [newUser, setUser] = useState(user);
+  const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
+  const [followText, setFollowText] = useState<string>("Follow");
 
   const { getUserById, addOrUpdateBio, addOrUpdateProfilePicture } = useUsers();
   const { logoutAsync } = useAuth();
+  const { getFollowingStatus, followUser, unfollowUser } = useFollows();
   const navigate = useNavigate();
 
   const isCurrentUser = useAuthStore.getState().user?.id === newUser.id;
@@ -29,6 +33,30 @@ const ProfileCard = ({ user }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const API_URL = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    const fetchFollowingStatus = async () => {
+      if (!isCurrentUser) {
+        const status = await getFollowingStatus(newUser.id);
+        setIsFollowing(status);
+        setFollowText(status ? "Unfollow" : "Follow");
+      }
+    };
+
+    fetchFollowingStatus();
+  }, [newUser.id, isCurrentUser]);
+
+  useEffect(() => {
+    const fetchUserBio = async () => {
+      const updatedUser = await getUserById(newUser.id);
+      if (updatedUser) {
+        setUser(updatedUser);
+        setBioText(updatedUser.bio ?? "No bio yet");
+      }
+    };
+
+    fetchUserBio();
+  }, [newUser.id]);
 
   const handleImageSelected = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -114,6 +142,26 @@ const ProfileCard = ({ user }: Props) => {
               }}
             >
               Logout
+            </p>
+          </div>
+        )}
+        {!isCurrentUser && (
+          <div className="logout-container">
+            <p
+              className="edit-bio-text"
+              onClick={() => {
+                if (isFollowing) {
+                  unfollowUser(newUser.id);
+                  setFollowText("Follow");
+                  setIsFollowing(false);
+                } else {
+                  followUser(newUser.id);
+                  setFollowText("Unfollow");
+                  setIsFollowing(true);
+                }
+              }}
+            >
+              [{followText}]
             </p>
           </div>
         )}

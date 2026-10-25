@@ -2,7 +2,7 @@ import { useState } from "react";
 import PostContentTextArea from "../components/PostContentTextArea";
 import "./CreatePostPage.css";
 import AuthButton from "../components/AuthButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { usePosts } from "../hooks/usePosts";
 import BackToFeedButton from "../components/BackToFeedButton";
 
@@ -12,6 +12,7 @@ const CreatePostPage = () => {
   const postString = "Post";
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { postError, createPost } = usePosts();
 
   return (
@@ -28,7 +29,9 @@ const CreatePostPage = () => {
           onClick={async () => {
             try {
               await createPost(text);
-              navigate("/feed");
+              navigate("/feed", {
+                state: { from: location.pathname },
+              });
             } catch (err: any) {
               alert(err.response?.data?.message ?? "Failed to create post");
             }

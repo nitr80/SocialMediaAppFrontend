@@ -3,6 +3,7 @@ import {
   addOrUpdateBio as addOrUpdateBioApi,
   addOrUpdateProfilePicture as addOrUpdateProfilePictureApi,
   getUserById as getUserByIdApi,
+  searchUsernameApi,
 } from "../api/usersApi";
 import type { User } from "../types/user";
 import type { Bio } from "../types/bio";
@@ -27,22 +28,44 @@ export const useUsers = () => {
 
   const addOrUpdateBio = async (bio: Bio) => {
     setError(null);
-    try { 
+    try {
       await addOrUpdateBioApi(bio);
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to update bio");
     }
   };
 
-  const addOrUpdateProfilePicture = async (image: FormData) => 
-  {
+  const addOrUpdateProfilePicture = async (image: FormData) => {
     setError(null);
-    try { 
+    try {
       await addOrUpdateProfilePictureApi(image);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to update profile picture");
+      setError(
+        err.response?.data?.message || "Failed to update profile picture",
+      );
     }
-  }
+  };
 
-  return { userError, userLoading, getUserById, addOrUpdateBio, addOrUpdateProfilePicture };
+  const searchUsername = async (username: string): Promise<User[] | null> => {
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await searchUsernameApi(username);
+      return res.data;
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Failed to search username");
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    userError,
+    userLoading,
+    getUserById,
+    addOrUpdateBio,
+    addOrUpdateProfilePicture,
+    searchUsername,
+  };
 };

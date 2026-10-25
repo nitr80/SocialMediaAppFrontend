@@ -135,8 +135,8 @@ const ProfileCard = ({ user }: Props) => {
               onClick={() => {
                 try {
                   logoutAsync();
-                  navigate("/")
-                } catch (err : any) {
+                  navigate("/");
+                } catch (err: any) {
                   alert(err.response?.data?.message ?? "Failed to logout");
                 }
               }}

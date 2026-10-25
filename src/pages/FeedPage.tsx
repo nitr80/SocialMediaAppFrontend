@@ -4,10 +4,11 @@ import { usePosts } from "../hooks/usePosts";
 import type { Post } from "../types/post";
 import "./FeedPage.css";
 import "../components/ProfileCard.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useLikes } from "../hooks/useLikes";
 import ProfileCard from "../components/ProfileCard";
 import { useAuthStore } from "../store/authStore";
+import UserSearchArea from "../components/UserSearchArea";
 
 const FeedPage = () => {
   const { postError, postLoading, loadAllPosts } = usePosts();
@@ -16,6 +17,7 @@ const FeedPage = () => {
   const [likedPosts, setLikedPosts] = useState<number[]>([]);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -27,7 +29,7 @@ const FeedPage = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [location.key]);
 
   if (postLoading) {
     return (
@@ -60,6 +62,9 @@ const FeedPage = () => {
           >
             <img src="/user.png" alt="Profile" />
           </button>
+        </div>
+        <div className="user-search-area-container">
+          <UserSearchArea />
         </div>
         <div className="create-button-container">
           <button

@@ -71,3 +71,18 @@
   height:40px;
   width: 40px;
 }
+
+
+.user-search-area-container
+{
+  position: fixed;
+  top: 80px;
+  left: 65%;
+  /* width: 100%; */
+
+  display: flex;
+  justify-content: center;
+
+  padding: 12px;
+  box-sizing: border-box;
+}

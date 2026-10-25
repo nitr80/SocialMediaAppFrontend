@@ -27,7 +27,7 @@ api.interceptors.response.use(
     console.log("Interceptor hit:", error.config.url);
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== "/auth/refresh") {
+    if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== "/Auth/Refresh") {
       console.log("Trying refresh");
       originalRequest._retry = true;
 
@@ -40,7 +40,7 @@ api.interceptors.response.use(
 
         return api(originalRequest);
       } catch {
-        // useAuthStore.getState().logout();
+        useAuthStore.getState().logout();
         console.log("Refresh failed");
         window.location.href = "/";
       }

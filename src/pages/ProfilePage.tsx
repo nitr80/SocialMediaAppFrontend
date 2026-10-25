@@ -9,30 +9,29 @@ import BackToFeedButton from "../components/BackToFeedButton";
 const ProfilePage = () => {
   const { getUserById, userLoading } = useUsers();
   const [user, setUser] = useState<User>();
-  const [bio, setBio] = useState<string | undefined>("");
 
   const { id } = useParams();
-  if (!id) {
-    return <div>Invalid ID</div>;
-  }
-
   const userId = Number(id);
-  if (isNaN(userId)) {
-    return <div>Invalid ID</div>;
-  }
 
   useEffect(() => {
+    if (!id || !Number.isInteger(userId) || userId <= 0) {
+      return;
+    }
+
     const fetchUser = async () => {
       const userData = await getUserById(userId);
 
       if (userData) {
         setUser(userData);
-        setBio(userData.bio);
       }
     };
 
     fetchUser();
-  }, []);
+  }, [userId, getUserById, id]);
+
+  if (!id || !Number.isInteger(userId) || userId <= 0) {
+    return <div>Invalid ID</div>;
+  }
 
   if (userLoading || !user) {
     return (

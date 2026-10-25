@@ -5,7 +5,7 @@ import "./UserSearchArea.css";
 import { useNavigate } from "react-router";
 
 const UserSearchArea = () => {
-  const { userError, userLoading, searchUsername } = useUsers();
+  const { userLoading, searchUsername } = useUsers();
 
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState<User[]>([]);
@@ -21,7 +21,7 @@ const UserSearchArea = () => {
     };
 
     fetchUsers();
-  }, [query]);
+  }, [query, searchUsername]);
 
   return (
     <div>

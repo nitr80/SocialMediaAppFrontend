@@ -4,6 +4,7 @@ import DataInputField from "../components/DataInputField";
 import { useAuth } from "../hooks/useAuth";
 import "./AuthPages.css";
 import { Link, useNavigate } from "react-router-dom";
+import { isAxiosError } from "axios";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
@@ -109,8 +110,12 @@ const RegisterPage = () => {
               try {
                 await register(username, email, password);
                 navigate("/feed", { replace: true });
-              } catch (err: any) {
-                alert(err.response?.data?.message ?? "Registering failed!");
+              } catch (err: unknown) {
+                if (isAxiosError(err)) {
+                  alert(err.response?.data?.message ?? "Registering failed!");
+                } else {
+                  alert("Registering failed!");
+                }
               }
             }}
           ></AuthButton>

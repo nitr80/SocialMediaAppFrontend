@@ -4,6 +4,7 @@ import DataInputField from "../components/DataInputField";
 import { useAuth } from "../hooks/useAuth";
 import "./AuthPages.css";
 import { Link, useNavigate } from "react-router-dom";
+import { isAxiosError } from "axios";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -34,8 +35,12 @@ const LoginPage = () => {
               try {
                 await login(username, password);
                 navigate("/feed", { replace: true });
-              } catch (err: any) {
-                alert(err.response?.data?.message ?? "Login failed!");
+              } catch (err: unknown) {
+                if (isAxiosError(err)) {
+                  alert(err.response?.data?.message || "Login failed!");
+                } else {
+                  alert("Login failed!");
+                }
               }
             }}
           ></AuthButton>

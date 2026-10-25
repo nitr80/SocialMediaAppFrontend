@@ -6,6 +6,7 @@ import "./ExpandedPost.css";
 import "./PostCard.css";
 import type { Post } from "../types/post";
 import { useNavigate } from "react-router-dom";
+import { isAxiosError } from "axios";
 
 interface Props {
   post: Post;
@@ -54,10 +55,14 @@ const ExpandedPost = ({ post, isLiked }: Props) => {
                   setLocalLikeCount(localLikeCount - 1);
                 }
                 setLiked(!liked);
-              } catch (err: any) {
-                alert(
-                  err.response?.data?.message ?? "Failed to like post card",
-                );
+              } catch (err: unknown) {
+                if (isAxiosError(err)) {
+                  alert(
+                    err.response?.data?.message ?? "Failed to like post card",
+                  );
+                } else {
+                  alert("Failed to like post card");
+                }
               }
             }}
           >

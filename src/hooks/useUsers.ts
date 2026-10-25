@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   addOrUpdateBio as addOrUpdateBioApi,
   addOrUpdateProfilePicture as addOrUpdateProfilePictureApi,
@@ -7,58 +7,78 @@ import {
 } from "../api/usersApi";
 import type { User } from "../types/user";
 import type { Bio } from "../types/bio";
+import { isAxiosError } from "axios";
 
 export const useUsers = () => {
   const [userError, setError] = useState<string | null>(null);
   const [userLoading, setLoading] = useState<boolean>(false);
 
-  const getUserById = async (id: number): Promise<User | null> => {
+  const getUserById = useCallback(async (id: number): Promise<User | null> => {
     setError(null);
     setLoading(true);
     try {
       const res = await getUserByIdApi(id);
       return res.data;
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to get user");
+    } catch (err: unknown) {
+      if (isAxiosError(err)) {
+        setError(err.response?.data?.message || "Failed to get user");
+      } else {
+        setError("Failed to get user");
+      }
       return null;
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const addOrUpdateBio = async (bio: Bio) => {
+  const addOrUpdateBio = useCallback(async (bio: Bio) => {
     setError(null);
     try {
       await addOrUpdateBioApi(bio);
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to update bio");
+    } catch (err: unknown) {
+      if (isAxiosError(err)) {
+        setError(err.response?.data?.message || "Failed to update bio");
+      } else {
+        setError("Failed to update bio");
+      }
     }
-  };
+  }, []);
 
-  const addOrUpdateProfilePicture = async (image: FormData) => {
+  const addOrUpdateProfilePicture = useCallback(async (image: FormData) => {
     setError(null);
     try {
       await addOrUpdateProfilePictureApi(image);
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message || "Failed to update profile picture",
-      );
+    } catch (err: unknown) {
+      if (isAxiosError(err)) {
+        setError(
+          err.response?.data?.message || "Failed to update profile picture",
+        );
+      } else {
+        setError("Failed to update profile picture");
+      }
     }
-  };
+  }, []);
 
-  const searchUsername = async (username: string): Promise<User[] | null> => {
-    setError(null);
-    setLoading(true);
-    try {
-      const res = await searchUsernameApi(username);
-      return res.data;
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to search username");
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
+  const searchUsername = useCallback(
+    async (username: string): Promise<User[] | null> => {
+      setError(null);
+      setLoading(true);
+      try {
+        const res = await searchUsernameApi(username);
+        return res.data;
+      } catch (err: unknown) {
+        if (isAxiosError(err)) {
+          setError(err.response?.data?.message || "Failed to search username");
+        } else {
+          setError("Failed to search username");
+        }
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
 
   return {
     userError,

@@ -5,6 +5,7 @@ import AuthButton from "../components/AuthButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { usePosts } from "../hooks/usePosts";
 import BackToFeedButton from "../components/BackToFeedButton";
+import { isAxiosError } from "axios";
 
 const CreatePostPage = () => {
   const [text, setText] = useState("");
@@ -13,7 +14,7 @@ const CreatePostPage = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { postError, createPost } = usePosts();
+  const { createPost } = usePosts();
 
   return (
     <div className="page">
@@ -32,8 +33,12 @@ const CreatePostPage = () => {
               navigate("/feed", {
                 state: { from: location.pathname },
               });
-            } catch (err: any) {
-              alert(err.response?.data?.message ?? "Failed to create post");
+            } catch (err: unknown) {
+              if (isAxiosError(err)) {
+                alert(err.response?.data?.message || "Failed to create post");
+              } else {
+                alert("Failed to create post");
+              }
             }
           }}
         ></AuthButton>

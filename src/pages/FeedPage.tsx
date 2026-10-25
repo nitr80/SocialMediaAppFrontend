@@ -6,12 +6,11 @@ import "./FeedPage.css";
 import "../components/ProfileCard.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useLikes } from "../hooks/useLikes";
-import ProfileCard from "../components/ProfileCard";
 import { useAuthStore } from "../store/authStore";
 import UserSearchArea from "../components/UserSearchArea";
 
 const FeedPage = () => {
-  const { postError, postLoading, loadAllPosts } = usePosts();
+  const { postLoading, loadAllPosts } = usePosts();
   const { getAllLiked } = useLikes();
   const [posts, setPosts] = useState<Post[]>([]);
   const [likedPosts, setLikedPosts] = useState<number[]>([]);
@@ -29,7 +28,7 @@ const FeedPage = () => {
     };
 
     fetchPosts();
-  }, [location.key]);
+  }, [location.key, loadAllPosts, getAllLiked]);
 
   if (postLoading) {
     return (

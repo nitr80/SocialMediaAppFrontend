@@ -4,6 +4,7 @@ import { toTimeOrDate } from "../utils/dateUtils";
 import "./PostCard.css";
 import { likeComment, unlikeComment } from "../api/commentLikesApi";
 import { useNavigate } from "react-router-dom";
+import { isAxiosError } from "axios";
 
 interface Props {
   comment: Comment;
@@ -43,17 +44,21 @@ const CommentCard = ({ comment, isLiked }: Props) => {
             onClick={async () => {
               try {
                 if (!liked) {
-                    await likeComment(comment.id);
+                  await likeComment(comment.id);
                   setLocalLikeCount(localLikeCount + 1);
                 } else {
                   await unlikeComment(comment.id);
                   setLocalLikeCount(localLikeCount - 1);
                 }
                 setLiked(!liked);
-              } catch (err: any) {
-                alert(
-                  err.response?.data?.message ?? "Failed to like post card",
-                );
+              } catch (err: unknown) {
+                if (isAxiosError(err)) {
+                  alert(
+                    err.response?.data?.message ?? "Failed to like post card",
+                  );
+                } else {
+                  alert("Failed to like post card");
+                }
               }
             }}
           >

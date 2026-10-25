@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import type { User } from "../types/user";
 import { persist } from "zustand/middleware";
-import { refreshToken } from "../api/authService";
 
 interface AuthStore {
   accessToken: string | null;

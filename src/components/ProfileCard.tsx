@@ -7,6 +7,7 @@ import { useAuthStore } from "../store/authStore";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useFollows } from "../hooks/useFollows";
+import { isAxiosError } from "axios";
 
 interface Props {
   user: User;
@@ -44,7 +45,7 @@ const ProfileCard = ({ user }: Props) => {
     };
 
     fetchFollowingStatus();
-  }, [newUser.id, isCurrentUser]);
+  }, [newUser.id, isCurrentUser, getFollowingStatus]);
 
   useEffect(() => {
     const fetchUserBio = async () => {
@@ -56,7 +57,7 @@ const ProfileCard = ({ user }: Props) => {
     };
 
     fetchUserBio();
-  }, [newUser.id]);
+  }, [newUser.id, getUserById]);
 
   const handleImageSelected = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -136,8 +137,12 @@ const ProfileCard = ({ user }: Props) => {
                 try {
                   logoutAsync();
                   navigate("/");
-                } catch (err: any) {
-                  alert(err.response?.data?.message ?? "Failed to logout");
+                } catch (err: unknown) {
+                  if (isAxiosError(err)) {
+                    alert(err.response?.data?.message ?? "Failed to logout");
+                  } else {
+                    alert("Failed to logout");
+                  }
                 }
               }}
             >

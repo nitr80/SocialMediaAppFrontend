@@ -4,6 +4,7 @@ import { useLikes } from "../hooks/useLikes";
 import { useNavigate } from "react-router-dom";
 import { toTimeOrDate } from "../utils/dateUtils";
 import type { Post } from "../types/post";
+import { isAxiosError } from "axios";
 
 interface Props {
   post: Post;
@@ -13,8 +14,7 @@ interface Props {
 const PostCard = ({ post, isLiked }: Props) => {
   const [liked, setLiked] = useState(isLiked);
   const [localLikeCount, setLocalLikeCount] = useState(post.likeCount);
-  const { loading, error, likePost, unlikePost, getAllLiked } =
-    useLikes();
+  const { likePost, unlikePost } = useLikes();
   const navigate = useNavigate();
 
   const API_URL = import.meta.env.VITE_API_URL;
@@ -59,10 +59,14 @@ const PostCard = ({ post, isLiked }: Props) => {
                     setLocalLikeCount(localLikeCount - 1);
                   }
                   setLiked(!liked);
-                } catch (err: any) {
-                  alert(
-                    err.response?.data?.message ?? "Failed to like post card",
-                  );
+                } catch (err: unknown) {
+                  if (isAxiosError(err)) {
+                    alert(
+                      err.response?.data?.message ?? "Failed to like post card",
+                    );
+                  } else {
+                    alert("Failed to like post card");
+                  }
                 }
               }}
             >

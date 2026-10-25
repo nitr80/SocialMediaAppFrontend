@@ -70,11 +70,14 @@ const ProfileCard = ({ user }: Props) => {
 
     formData.append("image", file);
 
-    await addOrUpdateProfilePicture(formData);
+    const newProfileImageUrl = await addOrUpdateProfilePicture(formData);
 
-    const updatedUser = await getUserById(newUser.id);
-
-    if (updatedUser) setUser(updatedUser);
+    if (newProfileImageUrl) {
+      setUser((prevUser) => ({
+        ...prevUser,
+        profileImageUrl: newProfileImageUrl,
+      }));
+    }
   };
 
   return (

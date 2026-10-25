@@ -44,10 +44,11 @@ export const useUsers = () => {
     }
   }, []);
 
-  const addOrUpdateProfilePicture = useCallback(async (image: FormData) => {
+  const addOrUpdateProfilePicture = useCallback(async (image: FormData): Promise<string | null> => {
     setError(null);
     try {
-      await addOrUpdateProfilePictureApi(image);
+      const res = await addOrUpdateProfilePictureApi(image);
+      return res.data;
     } catch (err: unknown) {
       if (isAxiosError(err)) {
         setError(
@@ -56,6 +57,7 @@ export const useUsers = () => {
       } else {
         setError("Failed to update profile picture");
       }
+      return null;
     }
   }, []);
 

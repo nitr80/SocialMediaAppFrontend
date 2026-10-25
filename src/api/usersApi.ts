@@ -12,7 +12,7 @@ export const addOrUpdateBio = (bio: Bio) => {
 };
 
 export const addOrUpdateProfilePicture = (image: FormData) => {
-  api.patch(`${usersUrl}/me/ProfilePicture`, image);
+  return api.patch(`${usersUrl}/me/ProfilePicture`, image);
 };
 
 export const searchUsernameApi = (username: string) => {

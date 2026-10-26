@@ -30,15 +30,22 @@
   white-space: pre-wrap;
 }
 
-.like-button {
+.like-button,
+.like-control {
   background: none;
   border: none;
   padding: 0;
+  font: inherit;
+  color: inherit;
   cursor: pointer;
+}
+
+.like-button {
   margin-top: 8px;
 }
 
-.like-button img {
+.like-button img,
+.like-control img {
   width: 20px;
   height: 20px;
 }
@@ -68,8 +75,10 @@
   margin-left: 4px;
 }
 
-.post-text-container {
-  cursor: pointer;
+.post-content-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
 }
 
 .bottom-icon-bar {

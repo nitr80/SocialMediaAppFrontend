@@ -8,7 +8,7 @@ interface Props {
 const AuthButton = ({ buttonText, onClick }: Props) => {
   return (
     <div className="auth-button-container">
-      <button className="auth-button" onClick={onClick}>
+      <button type="button" className="auth-button" onClick={onClick}>
         {buttonText}
       </button>
     </div>

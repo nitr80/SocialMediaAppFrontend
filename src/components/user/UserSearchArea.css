@@ -4,6 +4,8 @@
   justify-content: flex-start;
   gap: 5px;
   padding: 2px;
+  color: inherit;
+  text-decoration: none;
 }
 
 .user-search-result:hover {

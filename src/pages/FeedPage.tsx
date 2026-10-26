@@ -47,7 +47,9 @@ const FeedPage = () => {
         </div>
         <div className="profile-button-container">
           <button
+            type="button"
             className="profile-button"
+            aria-label="Open your profile"
             onClick={() => {
               const user = useAuthStore.getState().user;
               if (user) {
@@ -55,7 +57,7 @@ const FeedPage = () => {
               }
             }}
           >
-            <img src="/user.png" alt="Profile" />
+            <img src="/user.png" alt="" />
           </button>
         </div>
         <div className="user-search-area-container">
@@ -63,7 +65,9 @@ const FeedPage = () => {
         </div>
         <div className="create-button-container">
           <button
+            type="button"
             className="floating-create-button"
+            aria-label="Create post"
             onClick={() => {
               navigate("/create-post");
             }}

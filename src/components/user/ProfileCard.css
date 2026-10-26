@@ -21,8 +21,6 @@
   margin: 12px;
   margin-right: 12px;
   position: relative;
-
-  cursor: pointer;
 }
 
 .profile-picture-big {
@@ -38,16 +36,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
+  padding: 0;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
+  font: inherit;
   font-size: 18px;
   font-weight: bold;
   opacity: 0;
   transition: opacity 0.2s ease;
   border-radius: 100%;
+  cursor: pointer;
 }
 
-.profile-picture-container:hover .profile-picture-overlay {
+.profile-picture-container:hover .profile-picture-overlay,
+.profile-picture-overlay:focus-visible {
   opacity: 1;
 }
 
@@ -74,8 +77,12 @@
 
 .edit-bio-text {
   margin: 8px;
-  /* font-weight: bold; */
+  border: none;
+  padding: 0;
+  background: none;
+  font: inherit;
   font-size: small;
+  text-align: left;
   color: blue;
   cursor: pointer;
 }

@@ -7,7 +7,9 @@ const BackToFeedButton = () => {
   return (
     <div className="back-to-feed-button-container">
       <button
+        type="button"
         className="back-to-feed-button"
+        aria-label="Back to feed"
         onClick={() => {
           navigate("/feed");
         }}

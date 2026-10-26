@@ -16,6 +16,7 @@ const BioInputField = ({ text, setText }: Props) => {
         value={text}
         onChange={handleChange}
         className="input-field bio-input-field"
+        aria-label="Bio"
         rows={1}
       />
     </div>

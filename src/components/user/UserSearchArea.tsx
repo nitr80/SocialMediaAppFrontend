@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useUsers } from "../../hooks/useUsers";
 import type { User } from "../../types/user";
 import "./UserSearchArea.css";
-import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import Avatar from "../ui/Avatar";
 
 const UserSearchArea = () => {
@@ -10,8 +10,6 @@ const UserSearchArea = () => {
 
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState<User[]>([]);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -36,14 +34,15 @@ const UserSearchArea = () => {
 
       {!loading &&
         searchResults.map((user) => (
-          <div
+          <Link
             key={user.id}
+            to={`/profile/${user.id}`}
             className="user-search-result"
-            onClick={() => navigate(`/profile/${user.id}`)}
+            aria-label={`View ${user.username}'s profile`}
           >
-            <Avatar user={user} alt={`${user.username}'s profile`} />
+            <Avatar user={user} alt="" />
             <span>{user.username}</span>
-          </div>
+          </Link>
         ))}
       {loading && <p>Loading...</p>}
     </div>

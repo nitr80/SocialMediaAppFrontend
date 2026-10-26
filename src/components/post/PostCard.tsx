@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./PostItem.css";
 import { useLikes } from "../../hooks/useLikes";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toTimeOrDate } from "../../utils/dateUtils";
 import type { Post } from "../../types/post";
 import { getErrorMessage } from "../../utils/errorUtils";
@@ -15,34 +15,32 @@ const PostCard = ({ post, isLiked }: Props) => {
   const [liked, setLiked] = useState(isLiked);
   const [localLikeCount, setLocalLikeCount] = useState(post.likeCount);
   const { loading, likePost, unlikePost } = useLikes();
-  const navigate = useNavigate();
 
   return (
     <div className="post-card">
-      <Avatar
-        user={post.author}
-        onClick={() => {
-          navigate(`/profile/${post.author.id}`);
-        }}
-      />
-
-      <div
-        className="post-text-container"
-        onClick={() => {
-          navigate(`/post-details/${post.id}`);
-        }}
+      <Link
+        to={`/profile/${post.author.id}`}
+        className="avatar-link"
+        aria-label={`View ${post.author.username}'s profile`}
       >
-        <p className="creation-date-title">{toTimeOrDate(post.createdAt)}</p>
-        <p className="author-title">{post.author.username}</p>
-        <p className="post-content-text">{post.content}</p>
+        <Avatar user={post.author} alt="" />
+      </Link>
+
+      <div>
+        <Link to={`/post-details/${post.id}`} className="post-content-link">
+          <p className="creation-date-title">{toTimeOrDate(post.createdAt)}</p>
+          <p className="author-title">{post.author.username}</p>
+          <p className="post-content-text">{post.content}</p>
+        </Link>
 
         <div className="bottom-icon-bar">
           <div className="like-container">
             <button
+              type="button"
               className="like-button"
-              onClick={async (e) => {
-                e.stopPropagation();
-
+              aria-pressed={liked}
+              aria-label={liked ? "Unlike post" : "Like post"}
+              onClick={async () => {
                 if (loading) {
                   return;
                 }
@@ -63,7 +61,7 @@ const PostCard = ({ post, isLiked }: Props) => {
             >
               <img
                 src={liked ? "/filled_heart_icon.png" : "/empty_heart_icon.png"}
-                alt="Like"
+                alt=""
               />
             </button>
             <p className="like-count">{localLikeCount}</p>

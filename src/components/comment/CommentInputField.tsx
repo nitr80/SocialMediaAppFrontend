@@ -18,10 +18,16 @@ const CommentInputField = ({ text, setText, onSendClicked }: Props) => {
           value={text}
           onChange={handleChange}
           className="input-field comment-input-field-content"
+          aria-label="Write a comment"
           rows={1}
         />
-        <button className="send-button" onClick={onSendClicked}>
-          <img src="/send_icon.png" alt="Post comment" />
+        <button
+          type="button"
+          className="send-button"
+          aria-label="Post comment"
+          onClick={onSendClicked}
+        >
+          <img src="/send_icon.png" alt="" />
         </button>
       </div>
     </div>

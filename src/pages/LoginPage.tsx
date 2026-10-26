@@ -23,11 +23,14 @@ const LoginPage = () => {
             label="Username:"
             value={username}
             setValue={setUsername}
+            autoComplete="username"
           ></DataInputField>
           <DataInputField
             label="Password:"
             value={password}
             setValue={setPassword}
+            type="password"
+            autoComplete="current-password"
           ></DataInputField>
           <AuthButton
             buttonText="Login"

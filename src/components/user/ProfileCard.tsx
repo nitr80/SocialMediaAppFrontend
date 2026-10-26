@@ -82,15 +82,20 @@ const ProfileCard = ({ user }: Props) => {
 
   return (
     <div className="profile-card">
-      <div
-        className="profile-picture-container"
-        onClick={() => {
-          if (isCurrentUser) fileInputRef.current?.click();
-        }}
-        // send the request to the api service
-      >
+      <div className="profile-picture-container">
         <Avatar user={newUser} className="profile-picture-big" />
-        {isCurrentUser && <div className="profile-picture-overlay">Edit</div>}
+        {isCurrentUser && (
+          <button
+            type="button"
+            className="profile-picture-overlay"
+            aria-label="Edit profile picture"
+            onClick={() => {
+              fileInputRef.current?.click();
+            }}
+          >
+            Edit
+          </button>
+        )}
 
         <input
           ref={fileInputRef}
@@ -109,7 +114,8 @@ const ProfileCard = ({ user }: Props) => {
         )}
         {isCurrentUser && (
           <div className="logout-container">
-            <p
+            <button
+              type="button"
               className="edit-bio-text"
               onClick={async () => {
                 if (!canEditBio) {
@@ -129,8 +135,9 @@ const ProfileCard = ({ user }: Props) => {
               }}
             >
               {editBioText}
-            </p>
-            <p
+            </button>
+            <button
+              type="button"
               className="edit-bio-text"
               onClick={async () => {
                 try {
@@ -142,16 +149,17 @@ const ProfileCard = ({ user }: Props) => {
               }}
             >
               Logout
-            </p>
+            </button>
           </div>
         )}
         {!isCurrentUser && (
           <div className="logout-container">
-            <p
+            <button
+              type="button"
               className="edit-bio-text"
+              aria-pressed={isFollowing ?? undefined}
               onClick={async () => {
                 if (isFollowing) {
-
                   try {
                     await unfollowUser(newUser.id);
                     setFollowText("Follow");
@@ -171,7 +179,7 @@ const ProfileCard = ({ user }: Props) => {
               }}
             >
               [{followText}]
-            </p>
+            </button>
           </div>
         )}
       </div>

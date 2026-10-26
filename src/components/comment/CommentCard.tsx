@@ -3,7 +3,7 @@ import type { Comment } from "../../types/comment";
 import { toTimeOrDate } from "../../utils/dateUtils";
 import "../post/PostItem.css";
 import { useCommentLikes } from "../../hooks/useCommentLikes";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getErrorMessage } from "../../utils/errorUtils";
 import Avatar from "../ui/Avatar";
 
@@ -17,23 +17,26 @@ const CommentCard = ({ comment, isLiked }: Props) => {
   const [localLikeCount, setLocalLikeCount] = useState(comment.likeCount);
 
   const { loading, likeComment, unlikeComment } = useCommentLikes();
-  const navigate = useNavigate();
 
   return (
     <div className="post-card">
-      <Avatar
-        user={comment.author}
-        onClick={() => {
-          navigate(`/profile/${comment.author.id}`);
-        }}
-      />
+      <Link
+        to={`/profile/${comment.author.id}`}
+        className="avatar-link"
+        aria-label={`View ${comment.author.username}'s profile`}
+      >
+        <Avatar user={comment.author} alt="" />
+      </Link>
       <div>
         <p className="creation-date-title">{toTimeOrDate(comment.createdAt)}</p>
         <p className="author-title">{comment.author.username}</p>
         <p className="post-content-text">{comment.content}</p>
         <div className="like-container">
           <button
+            type="button"
             className="like-button"
+            aria-pressed={liked}
+            aria-label={liked ? "Unlike comment" : "Like comment"}
             onClick={async () => {
               if (loading) {
                 return;
@@ -54,7 +57,7 @@ const CommentCard = ({ comment, isLiked }: Props) => {
           >
             <img
               src={liked ? "/filled_heart_icon.png" : "/empty_heart_icon.png"}
-              alt="Like"
+              alt=""
             />
           </button>
           <p className="like-count">{localLikeCount}</p>

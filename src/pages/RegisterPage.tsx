@@ -78,21 +78,28 @@ const RegisterPage = () => {
             label="Username:"
             value={username}
             setValue={setUsername}
+            autoComplete="username"
           ></DataInputField>
           <DataInputField
             label="Email:"
             value={email}
             setValue={setEmail}
+            type="email"
+            autoComplete="email"
           ></DataInputField>
           <DataInputField
             label="Password:"
             value={password}
             setValue={setPassword}
+            type="password"
+            autoComplete="new-password"
           ></DataInputField>
           <DataInputField
             label="Password (Again):"
             value={secondPassword}
             setValue={setSecondPassword}
+            type="password"
+            autoComplete="new-password"
           ></DataInputField>
           <AuthButton
             buttonText="Register"

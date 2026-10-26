@@ -37,6 +37,7 @@ const UserSearchArea = () => {
       {!loading &&
         searchResults.map((user) => (
           <div
+            key={user.id}
             className="user-search-result"
             onClick={() => navigate(`/profile/${user.id}`)}
           >

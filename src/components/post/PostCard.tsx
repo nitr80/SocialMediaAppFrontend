@@ -14,7 +14,7 @@ interface Props {
 const PostCard = ({ post, isLiked }: Props) => {
   const [liked, setLiked] = useState(isLiked);
   const [localLikeCount, setLocalLikeCount] = useState(post.likeCount);
-  const { likePost, unlikePost } = useLikes();
+  const { loading, likePost, unlikePost } = useLikes();
   const navigate = useNavigate();
 
   return (
@@ -42,15 +42,20 @@ const PostCard = ({ post, isLiked }: Props) => {
               className="like-button"
               onClick={async (e) => {
                 e.stopPropagation();
+
+                if (loading) {
+                  return;
+                }
+
                 try {
                   if (!liked) {
                     await likePost(post.id);
-                    setLocalLikeCount(localLikeCount + 1);
+                    setLocalLikeCount((prevCount) => prevCount + 1);
                   } else {
                     await unlikePost(post.id);
-                    setLocalLikeCount(localLikeCount - 1);
+                    setLocalLikeCount((prevCount) => prevCount - 1);
                   }
-                  setLiked(!liked);
+                  setLiked((prevLiked) => !prevLiked);
                 } catch (err: unknown) {
                   alert(getErrorMessage(err, "Failed to like post card"));
                 }

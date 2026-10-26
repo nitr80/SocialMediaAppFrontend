@@ -16,7 +16,7 @@ const CommentCard = ({ comment, isLiked }: Props) => {
   const [liked, setLiked] = useState(isLiked);
   const [localLikeCount, setLocalLikeCount] = useState(comment.likeCount);
 
-  const { likeComment, unlikeComment } = useCommentLikes();
+  const { loading, likeComment, unlikeComment } = useCommentLikes();
   const navigate = useNavigate();
 
   return (
@@ -35,15 +35,18 @@ const CommentCard = ({ comment, isLiked }: Props) => {
           <button
             className="like-button"
             onClick={async () => {
+              if (loading) {
+                return;
+              }
               try {
                 if (!liked) {
                   await likeComment(comment.id);
-                  setLocalLikeCount(localLikeCount + 1);
+                  setLocalLikeCount((prevCount) => prevCount + 1);
                 } else {
                   await unlikeComment(comment.id);
-                  setLocalLikeCount(localLikeCount - 1);
+                  setLocalLikeCount((prevCount) => prevCount - 1);
                 }
-                setLiked(!liked);
+                setLiked((prevLiked) => !prevLiked);
               } catch (err: unknown) {
                 alert(getErrorMessage(err, "Failed to like post card"));
               }

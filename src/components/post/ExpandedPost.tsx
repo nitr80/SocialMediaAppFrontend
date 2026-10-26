@@ -18,7 +18,7 @@ const ExpandedPost = ({ post, isLiked }: Props) => {
   const [liked, setLiked] = useState(isLiked);
   const [localLikeCount, setLocalLikeCount] = useState(post.likeCount);
 
-  const { likePost, unlikePost } = useLikes();
+  const { loading, likePost, unlikePost } = useLikes();
   const navigate = useNavigate();
 
   return (
@@ -38,15 +38,19 @@ const ExpandedPost = ({ post, isLiked }: Props) => {
           <div
             className="like-container"
             onClick={async () => {
+              if (loading) {
+                return;
+              }
+
               try {
                 if (!liked) {
                   await likePost(post.id);
-                  setLocalLikeCount(localLikeCount + 1);
+                  setLocalLikeCount((prevCount) => prevCount + 1);
                 } else {
                   await unlikePost(post.id);
-                  setLocalLikeCount(localLikeCount - 1);
+                  setLocalLikeCount((prevCount) => prevCount - 1);
                 }
-                setLiked(!liked);
+                setLiked((prevLiked) => !prevLiked);
               } catch (err: unknown) {
                 alert(getErrorMessage(err, "Failed to like post card"));
               }

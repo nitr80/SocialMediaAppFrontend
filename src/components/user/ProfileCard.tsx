@@ -111,7 +111,7 @@ const ProfileCard = ({ user }: Props) => {
           <div className="logout-container">
             <p
               className="edit-bio-text"
-              onClick={() => {
+              onClick={async () => {
                 if (!canEditBio) {
                   setCanEditBio(true);
                   setEditBioText(SAVE_BIO_TEXT);
@@ -120,7 +120,11 @@ const ProfileCard = ({ user }: Props) => {
                   setEditBioText(EDIT_BIO_TEXT);
 
                   const bio: Bio = { bio: bioText };
-                  addOrUpdateBio(bio);
+                  try {
+                    await addOrUpdateBio(bio);
+                  } catch (err: unknown) {
+                    alert(getErrorMessage(err, "Failed to update bio"));
+                  }
                 }
               }}
             >
@@ -128,9 +132,9 @@ const ProfileCard = ({ user }: Props) => {
             </p>
             <p
               className="edit-bio-text"
-              onClick={() => {
+              onClick={async () => {
                 try {
-                  logoutAsync();
+                  await logoutAsync();
                   navigate("/");
                 } catch (err: unknown) {
                   alert(getErrorMessage(err, "Failed to logout"));
@@ -145,15 +149,24 @@ const ProfileCard = ({ user }: Props) => {
           <div className="logout-container">
             <p
               className="edit-bio-text"
-              onClick={() => {
+              onClick={async () => {
                 if (isFollowing) {
-                  unfollowUser(newUser.id);
-                  setFollowText("Follow");
-                  setIsFollowing(false);
+
+                  try {
+                    await unfollowUser(newUser.id);
+                    setFollowText("Follow");
+                    setIsFollowing(false);
+                  } catch (err: unknown) {
+                    alert(getErrorMessage(err, "Failed to unfollow user"));
+                  }
                 } else {
-                  followUser(newUser.id);
-                  setFollowText("Unfollow");
-                  setIsFollowing(true);
+                  try {
+                    await followUser(newUser.id);
+                    setFollowText("Unfollow");
+                    setIsFollowing(true);
+                  } catch (err: unknown) {
+                    alert(getErrorMessage(err, "Failed to follow user"));
+                  }
                 }
               }}
             >

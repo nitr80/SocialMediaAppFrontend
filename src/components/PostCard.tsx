@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./PostCard.css";
+import "./PostItem.css";
 import { useLikes } from "../hooks/useLikes";
 import { useNavigate } from "react-router-dom";
 import { toTimeOrDate } from "../utils/dateUtils";

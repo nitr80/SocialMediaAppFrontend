@@ -1,3 +1,5 @@
+import "./PostContentTextArea.css";
+
 interface Props {
   label: string;
   text: string;

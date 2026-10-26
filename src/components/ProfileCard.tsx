@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import "./ProfileCard.css";
 import type { User } from "../types/user";
 import BioInputField from "./BioInputField";
 import { useUsers } from "../hooks/useUsers";

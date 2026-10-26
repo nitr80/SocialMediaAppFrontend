@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Comment } from "../types/comment";
 import { toTimeOrDate } from "../utils/dateUtils";
-import "./PostCard.css";
+import "./PostItem.css";
 import { likeComment, unlikeComment } from "../api/commentLikesApi";
 import { useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";

@@ -1,0 +1,16 @@
+:root {
+  --font-body: Georgia, "Times New Roman", Times, serif;
+
+  --color-surface: rgb(215, 252, 252);
+  --color-card: rgb(214, 235, 253);
+  --color-input-background: rgb(248, 245, 245);
+  --color-button-background: rgb(235, 235, 235);
+  --color-label: rgb(60, 60, 60);
+  --color-text-muted: rgb(103, 103, 103);
+  --color-border: rgb(162, 162, 162);
+  --color-accent: rgb(18, 147, 147);
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}

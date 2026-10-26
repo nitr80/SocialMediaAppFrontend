@@ -3,7 +3,7 @@ import { useLikes } from "../hooks/useLikes";
 import { toTimeOrDate } from "../utils/dateUtils";
 
 import "./ExpandedPost.css";
-import "./PostCard.css";
+import "./PostItem.css";
 import type { Post } from "../types/post";
 import { useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";

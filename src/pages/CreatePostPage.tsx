@@ -1,6 +1,5 @@
 import { useState } from "react";
 import PostContentTextArea from "../components/PostContentTextArea";
-import "./CreatePostPage.css";
 import AuthButton from "../components/AuthButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { usePosts } from "../hooks/usePosts";

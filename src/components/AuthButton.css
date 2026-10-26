@@ -1,8 +1,8 @@
 .auth-button {
-  background-color: rgb(235, 235, 235);
+  background-color: var(--color-button-background);
   width: 80px;
   height: 30px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-size: small;
 }
 

@@ -3,7 +3,6 @@ import PostCard from "../components/PostCard";
 import { usePosts } from "../hooks/usePosts";
 import type { Post } from "../types/post";
 import "./FeedPage.css";
-import "../components/ProfileCard.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useLikes } from "../hooks/useLikes";
 import { useAuthStore } from "../store/authStore";

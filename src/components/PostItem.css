@@ -3,26 +3,12 @@
   /* justify-content:; */
   width: 350px;
   height: auto;
-  background-color: rgb(215, 252, 252);
-  border-radius: 12px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
   padding: 16px;
   padding-bottom: 6px;
   margin: 8px;
 }
-
-.profile-picture {
-  width: 60px;
-  height: 60px;
-  min-height: 60px;
-  min-width: 60px;
-  /* background-color: grey; */
-  border-radius: 100%;
-  margin: 4px;
-  margin-right: 12px;
-
-  cursor: pointer;
-}
-
 
 .author-title {
   margin: 4px;
@@ -32,7 +18,7 @@
 
 .creation-date-title {
   margin: 4px;
-  color: rgb(103, 103, 103);
+  color: var(--color-text-muted);
 }
 
 .post-content-text {

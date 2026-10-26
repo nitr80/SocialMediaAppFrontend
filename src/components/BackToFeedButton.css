@@ -15,7 +15,7 @@
   width: 50px;
   text-align: center;
   font-size: x-large;
-  background-color: rgb(215, 252, 252);
+  background-color: var(--color-surface);
   border-radius: 100%;
   border-width: 0px;
 }

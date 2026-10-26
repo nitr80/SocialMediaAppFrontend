@@ -4,7 +4,7 @@ import {
   getFollowingStatus as getFollowingStatusApi,
   unfollowUser as unfollowUserApi,
 } from "../api/followsApi";
-import { isAxiosError } from "axios";
+import { getErrorMessage } from "../utils/errorUtils";
 
 export const useFollows = () => {
   const [error, setError] = useState<string | null>(null);
@@ -16,11 +16,7 @@ export const useFollows = () => {
     try {
       await followUserApi(userId);
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || "Failed to Follow the User");
-      } else {
-        setError("Failed to Follow the User");
-      }
+      setError(getErrorMessage(err, "Failed to Follow the User"));
       throw err;
     } finally {
       setLoading(false);
@@ -33,11 +29,7 @@ export const useFollows = () => {
     try {
       await unfollowUserApi(userId);
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || "Failed to Unfollow the User");
-      } else {
-        setError("Failed to Unfollow the User");
-      }
+      setError(getErrorMessage(err, "Failed to Unfollow the User"));
       throw err;
     } finally {
       setLoading(false);
@@ -52,13 +44,7 @@ export const useFollows = () => {
         const res = await getFollowingStatusApi(userId);
         return res.data;
       } catch (err: unknown) {
-        if (isAxiosError(err)) {
-          setError(
-            err.response?.data?.message || "Failed to get Following Status",
-          );
-        } else {
-          setError("Failed to get Following Status");
-        }
+        setError(getErrorMessage(err, "Failed to get Following Status"));
         throw err;
       } finally {
         setLoading(false);

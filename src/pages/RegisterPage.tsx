@@ -1,10 +1,10 @@
 import { useState } from "react";
-import AuthButton from "../components/AuthButton";
-import DataInputField from "../components/DataInputField";
+import AuthButton from "../components/ui/AuthButton";
+import DataInputField from "../components/ui/DataInputField";
 import { useAuth } from "../hooks/useAuth";
 import "./AuthPages.css";
 import { Link, useNavigate } from "react-router-dom";
-import { isAxiosError } from "axios";
+import { getErrorMessage } from "../utils/errorUtils";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
@@ -111,11 +111,7 @@ const RegisterPage = () => {
                 await register(username, email, password);
                 navigate("/feed", { replace: true });
               } catch (err: unknown) {
-                if (isAxiosError(err)) {
-                  alert(err.response?.data?.message ?? "Registering failed!");
-                } else {
-                  alert("Registering failed!");
-                }
+                alert(getErrorMessage(err, "Registering failed!"));
               }
             }}
           ></AuthButton>

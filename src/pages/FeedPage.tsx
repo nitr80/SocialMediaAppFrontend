@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import PostCard from "../components/PostCard";
+import PostCard from "../components/post/PostCard";
 import { usePosts } from "../hooks/usePosts";
 import type { Post } from "../types/post";
 import "./FeedPage.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useLikes } from "../hooks/useLikes";
 import { useAuthStore } from "../store/authStore";
-import UserSearchArea from "../components/UserSearchArea";
+import UserSearchArea from "../components/user/UserSearchArea";
+import PageLoader from "../components/ui/PageLoader";
 
 const FeedPage = () => {
   const { loading, loadAllPosts } = usePosts();
@@ -30,11 +31,7 @@ const FeedPage = () => {
   }, [location.key, loadAllPosts, getAllLiked]);
 
   if (loading) {
-    return (
-      <div className="page">
-        <p>Loading...</p>
-      </div>
-    );
+    return <PageLoader />;
   } else {
     return (
       <div className="feed-page">

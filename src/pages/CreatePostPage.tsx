@@ -1,10 +1,10 @@
 import { useState } from "react";
-import PostContentTextArea from "../components/PostContentTextArea";
-import AuthButton from "../components/AuthButton";
+import PostContentTextArea from "../components/post/PostContentTextArea";
+import AuthButton from "../components/ui/AuthButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { usePosts } from "../hooks/usePosts";
-import BackToFeedButton from "../components/BackToFeedButton";
-import { isAxiosError } from "axios";
+import BackToFeedButton from "../components/layout/BackToFeedButton";
+import { getErrorMessage } from "../utils/errorUtils";
 
 const CreatePostPage = () => {
   const [text, setText] = useState("");
@@ -33,11 +33,7 @@ const CreatePostPage = () => {
                 state: { from: location.pathname },
               });
             } catch (err: unknown) {
-              if (isAxiosError(err)) {
-                alert(err.response?.data?.message || "Failed to create post");
-              } else {
-                alert("Failed to create post");
-              }
+              alert(getErrorMessage(err, "Failed to create post"));
             }
           }}
         ></AuthButton>

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import ProfileCard from "../components/ProfileCard";
+import ProfileCard from "../components/user/ProfileCard";
 import { useUsers } from "../hooks/useUsers";
 import "./ProfilePage.css";
 import type { User } from "../types/user";
 import { useParams } from "react-router-dom";
-import BackToFeedButton from "../components/BackToFeedButton";
+import BackToFeedButton from "../components/layout/BackToFeedButton";
+import PageLoader from "../components/ui/PageLoader";
 
 const ProfilePage = () => {
   const { getUserById, loading } = useUsers();
@@ -34,11 +35,7 @@ const ProfilePage = () => {
   }
 
   if (loading || !user) {
-    return (
-      <div className="page">
-        <p>Loading...</p>
-      </div>
-    );
+    return <PageLoader />;
   } else {
     return (
       <div className="profile-page">

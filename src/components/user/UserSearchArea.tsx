@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useUsers } from "../hooks/useUsers";
-import type { User } from "../types/user";
+import { useUsers } from "../../hooks/useUsers";
+import type { User } from "../../types/user";
 import "./UserSearchArea.css";
 import { useNavigate } from "react-router";
-import { getProfileImageUrl } from "../utils/imageUtils";
+import Avatar from "../ui/Avatar";
 
 const UserSearchArea = () => {
   const { loading, searchUsername } = useUsers();
@@ -40,11 +40,7 @@ const UserSearchArea = () => {
             className="user-search-result"
             onClick={() => navigate(`/profile/${user.id}`)}
           >
-            <img
-              className="profile-picture"
-              src={getProfileImageUrl(user.profileImageUrl)}
-              alt={`${user.username}'s profile`}
-            />
+            <Avatar user={user} alt={`${user.username}'s profile`} />
             <span>{user.username}</span>
           </div>
         ))}

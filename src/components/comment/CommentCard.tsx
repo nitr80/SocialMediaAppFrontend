@@ -1,30 +1,28 @@
 import { useState } from "react";
-import type { Comment } from "../types/comment";
-import { toTimeOrDate } from "../utils/dateUtils";
-import "./PostItem.css";
-import { likeComment, unlikeComment } from "../api/commentLikesApi";
+import type { Comment } from "../../types/comment";
+import { toTimeOrDate } from "../../utils/dateUtils";
+import "../post/PostItem.css";
+import { useCommentLikes } from "../../hooks/useCommentLikes";
 import { useNavigate } from "react-router-dom";
-import { isAxiosError } from "axios";
-import { getProfileImageUrl } from "../utils/imageUtils";
+import { getErrorMessage } from "../../utils/errorUtils";
+import Avatar from "../ui/Avatar";
 
 interface Props {
   comment: Comment;
   isLiked: boolean;
-  // profilePicture
 }
 
 const CommentCard = ({ comment, isLiked }: Props) => {
   const [liked, setLiked] = useState(isLiked);
   const [localLikeCount, setLocalLikeCount] = useState(comment.likeCount);
 
+  const { likeComment, unlikeComment } = useCommentLikes();
   const navigate = useNavigate();
 
   return (
     <div className="post-card">
-      <img
-        className="profile-picture"
-        src={getProfileImageUrl(comment.author.profileImageUrl)}
-        alt="Profile Picture"
+      <Avatar
+        user={comment.author}
         onClick={() => {
           navigate(`/profile/${comment.author.id}`);
         }}
@@ -47,13 +45,7 @@ const CommentCard = ({ comment, isLiked }: Props) => {
                 }
                 setLiked(!liked);
               } catch (err: unknown) {
-                if (isAxiosError(err)) {
-                  alert(
-                    err.response?.data?.message ?? "Failed to like post card",
-                  );
-                } else {
-                  alert("Failed to like post card");
-                }
+                alert(getErrorMessage(err, "Failed to like post card"));
               }
             }}
           >

@@ -3,7 +3,7 @@ import { likePost as likePostApi } from "../api/likesApi";
 import { unlikePost as unlikePostApi } from "../api/likesApi";
 import { getLiked as getLikedApi } from "../api/likesApi";
 import { getAllLiked as getAllLikedApi } from "../api/likesApi";
-import { isAxiosError } from "axios";
+import { getErrorMessage } from "../utils/errorUtils";
 
 export const useLikes = () => {
   const [error, setError] = useState<string | null>(null);
@@ -15,11 +15,7 @@ export const useLikes = () => {
     try {
       await likePostApi(postId);
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || "Failed to Like the Post");
-      } else {
-        setError("Failed to Like the Post");
-      }
+      setError(getErrorMessage(err, "Failed to Like the Post"));
       throw err;
     } finally {
       setLoading(false);
@@ -32,11 +28,7 @@ export const useLikes = () => {
     try {
       await unlikePostApi(postId);
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || "Failed to Unlike the Post");
-      } else {
-        setError("Failed to Unlike the Post");
-      }
+      setError(getErrorMessage(err, "Failed to Unlike the Post"));
       throw err;
     } finally {
       setLoading(false);
@@ -50,11 +42,7 @@ export const useLikes = () => {
       const res = await getLikedApi(postId);
       return res.data;
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || "Failed to get Liked");
-      } else {
-        setError("Failed to get Liked");
-      }
+      setError(getErrorMessage(err, "Failed to get Liked"));
       throw err;
     } finally {
       setLoading(false);
@@ -68,13 +56,7 @@ export const useLikes = () => {
       const res = await getAllLikedApi();
       return res.data;
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(
-          err.response?.data?.message || "Failed to get All Liked Posts",
-        );
-      } else {
-        setError("Failed to get All Liked Posts");
-      }
+      setError(getErrorMessage(err, "Failed to get All Liked Posts"));
       throw err;
     } finally {
       setLoading(false);

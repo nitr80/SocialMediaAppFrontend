@@ -6,7 +6,7 @@ import {
   likeComment as likeCommentApi,
   unlikeComment as unlikeCommentApi,
 } from "../api/commentLikesApi";
-import { isAxiosError } from "axios";
+import { getErrorMessage } from "../utils/errorUtils";
 
 export const useCommentLikes = () => {
   const [error, setError] = useState<string | null>(null);
@@ -20,11 +20,7 @@ export const useCommentLikes = () => {
         const res = await getLikedApi(commentId);
         return res.data;
       } catch (err: unknown) {
-        if (isAxiosError(err)) {
-          setError(err.response?.data?.message || "Failed to get Liked");
-        } else {
-          setError("Failed to get Liked");
-        }
+        setError(getErrorMessage(err, "Failed to get Liked"));
         throw err;
       } finally {
         setLoading(false);
@@ -41,13 +37,7 @@ export const useCommentLikes = () => {
         const res = await getAllLikedApi(postId);
         return res.data;
       } catch (err: unknown) {
-        if (isAxiosError(err)) {
-          setError(
-            err.response?.data?.message || "Failed to get Liked Comments",
-          );
-        } else {
-          setError("Failed to get Liked Comments");
-        }
+        setError(getErrorMessage(err, "Failed to get Liked Comments"));
         throw err;
       } finally {
         setLoading(false);
@@ -62,11 +52,7 @@ export const useCommentLikes = () => {
     try {
       await likeCommentApi(commentId);
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || "Failed to like Comment");
-      } else {
-        setError("Failed to like Comment");
-      }
+      setError(getErrorMessage(err, "Failed to like Comment"));
       throw err;
     } finally {
       setLoading(false);
@@ -79,11 +65,7 @@ export const useCommentLikes = () => {
     try {
       await unlikeCommentApi(commentId);
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || "Failed to unlike Comment");
-      } else {
-        setError("Failed to unlike Comment");
-      }
+      setError(getErrorMessage(err, "Failed to unlike Comment"));
       throw err;
     } finally {
       setLoading(false);

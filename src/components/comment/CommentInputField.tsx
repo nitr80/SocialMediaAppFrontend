@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
 import "./CommentInputField.css";
 
 interface Props {
@@ -8,23 +8,7 @@ interface Props {
 }
 
 const CommentInputField = ({ text, setText, onSendClicked }: Props) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
-
-    const textarea = textareaRef.current;
-
-    if (!textarea) return;
-
-    textarea.style.height = "auto";
-
-    const lineHeight = 20; // match CSS line-height
-
-    const maxHeight = lineHeight * 3;
-
-    textarea.style.height = Math.min(textarea.scrollHeight, maxHeight) + "px";
-  };
+  const { textareaRef, handleChange } = useAutoResizeTextarea(setText);
 
   return (
     <div className="comment-input-field-container">

@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useState } from "react";
-import ExpandedPost from "../components/ExpandedPost";
+import ExpandedPost from "../components/post/ExpandedPost";
 import { usePosts } from "../hooks/usePosts";
 import type { Post } from "../types/post";
 import { useParams } from "react-router-dom";
 import { useLikes } from "../hooks/useLikes";
 import "./PostDetailsPage.css";
 import { useComments } from "../hooks/useComments";
-import CommentCard from "../components/CommentCard";
+import CommentCard from "../components/comment/CommentCard";
 import type { Comment } from "../types/comment";
-import CommentInputField from "../components/CommentInputField";
+import CommentInputField from "../components/comment/CommentInputField";
 import { useCommentLikes } from "../hooks/useCommentLikes";
-import BackToFeedButton from "../components/BackToFeedButton";
-import { isAxiosError } from "axios";
+import BackToFeedButton from "../components/layout/BackToFeedButton";
+import { getErrorMessage } from "../utils/errorUtils";
+import PageLoader from "../components/ui/PageLoader";
 
 const PostDetailsPage = () => {
   const { loading: postLoading, getPostById } = usePosts();
@@ -59,11 +60,7 @@ const PostDetailsPage = () => {
       setCommentContent("");
       fetchComments();
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        alert(err.response?.data?.message || "Failed to create comment");
-      } else {
-        alert("Failed to create comment");
-      }
+      alert(getErrorMessage(err, "Failed to create comment"));
     }
   };
 
@@ -76,11 +73,7 @@ const PostDetailsPage = () => {
   }
 
   if (postLoading || loading) {
-    return (
-      <div className="page">
-        <p>Loading...</p>
-      </div>
-    );
+    return <PageLoader />;
   } else {
     return (
       <div className="post-details-page">

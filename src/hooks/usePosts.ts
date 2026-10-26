@@ -3,7 +3,7 @@ import { getAllPosts as getAllPostsApi } from "../api/postsApi";
 import { createPost as createPostApi } from "../api/postsApi";
 import { getPostById as getPostByIdApi } from "../api/postsApi";
 import type { Post } from "../types/post";
-import { isAxiosError } from "axios";
+import { getErrorMessage } from "../utils/errorUtils";
 
 export const usePosts = () => {
   const [error, setError] = useState<string | null>(null);
@@ -17,11 +17,7 @@ export const usePosts = () => {
 
       return res.data;
     } catch (err: unknown) {
-      if (isAxiosError<{ message?: string }>(err)) {
-        setError(err.response?.data?.message || "Failed to load posts");
-      } else {
-        setError("Failed to load posts");
-      }
+      setError(getErrorMessage(err, "Failed to load posts"));
 
       throw err;
     } finally {
@@ -36,11 +32,7 @@ export const usePosts = () => {
       await createPostApi({ content });
       // return res.data;
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || "Failed to create post");
-      } else {
-        setError("Failed to create post");
-      }
+      setError(getErrorMessage(err, "Failed to create post"));
       throw err;
     } finally {
       setLoading(false);
@@ -54,11 +46,7 @@ export const usePosts = () => {
       const res = await getPostByIdApi(id);
       return res.data;
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || "Failed to get the post");
-      } else {
-        setError("Failed to get the post");
-      }
+      setError(getErrorMessage(err, "Failed to get the post"));
       throw err;
     } finally {
       setLoading(false);

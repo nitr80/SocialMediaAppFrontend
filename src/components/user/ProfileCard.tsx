@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import "./ProfileCard.css";
-import type { User } from "../types/user";
+import type { User } from "../../types/user";
 import BioInputField from "./BioInputField";
-import { useUsers } from "../hooks/useUsers";
-import type { Bio } from "../types/bio";
-import { useAuthStore } from "../store/authStore";
-import { useAuth } from "../hooks/useAuth";
+import { useUsers } from "../../hooks/useUsers";
+import type { Bio } from "../../types/bio";
+import { useAuthStore } from "../../store/authStore";
+import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { useFollows } from "../hooks/useFollows";
-import { isAxiosError } from "axios";
-import { getProfileImageUrl } from "../utils/imageUtils";
+import { useFollows } from "../../hooks/useFollows";
+import { getErrorMessage } from "../../utils/errorUtils";
+import Avatar from "../ui/Avatar";
 
 interface Props {
   user: User;
@@ -89,11 +89,7 @@ const ProfileCard = ({ user }: Props) => {
         }}
         // send the request to the api service
       >
-        <img
-          className="profile-picture-big"
-          src={getProfileImageUrl(newUser.profileImageUrl)}
-          alt="Profile Picture"
-        />
+        <Avatar user={newUser} className="profile-picture-big" />
         {isCurrentUser && <div className="profile-picture-overlay">Edit</div>}
 
         <input
@@ -137,11 +133,7 @@ const ProfileCard = ({ user }: Props) => {
                   logoutAsync();
                   navigate("/");
                 } catch (err: unknown) {
-                  if (isAxiosError(err)) {
-                    alert(err.response?.data?.message ?? "Failed to logout");
-                  } else {
-                    alert("Failed to logout");
-                  }
+                  alert(getErrorMessage(err, "Failed to logout"));
                 }
               }}
             >

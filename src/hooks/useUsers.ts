@@ -7,7 +7,7 @@ import {
 } from "../api/usersApi";
 import type { User } from "../types/user";
 import type { Bio } from "../types/bio";
-import { isAxiosError } from "axios";
+import { getErrorMessage } from "../utils/errorUtils";
 
 export const useUsers = () => {
   const [error, setError] = useState<string | null>(null);
@@ -20,11 +20,7 @@ export const useUsers = () => {
       const res = await getUserByIdApi(id);
       return res.data;
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || "Failed to get user");
-      } else {
-        setError("Failed to get user");
-      }
+      setError(getErrorMessage(err, "Failed to get user"));
       return null;
     } finally {
       setLoading(false);
@@ -36,11 +32,7 @@ export const useUsers = () => {
     try {
       await addOrUpdateBioApi(bio);
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || "Failed to update bio");
-      } else {
-        setError("Failed to update bio");
-      }
+      setError(getErrorMessage(err, "Failed to update bio"));
     }
   }, []);
 
@@ -51,13 +43,7 @@ export const useUsers = () => {
         const res = await addOrUpdateProfilePictureApi(image);
         return res.data;
       } catch (err: unknown) {
-        if (isAxiosError(err)) {
-          setError(
-            err.response?.data?.message || "Failed to update profile picture",
-          );
-        } else {
-          setError("Failed to update profile picture");
-        }
+        setError(getErrorMessage(err, "Failed to update profile picture"));
         return null;
       }
     },
@@ -72,11 +58,7 @@ export const useUsers = () => {
         const res = await searchUsernameApi(username);
         return res.data;
       } catch (err: unknown) {
-        if (isAxiosError(err)) {
-          setError(err.response?.data?.message || "Failed to search username");
-        } else {
-          setError("Failed to search username");
-        }
+        setError(getErrorMessage(err, "Failed to search username"));
         return null;
       } finally {
         setLoading(false);

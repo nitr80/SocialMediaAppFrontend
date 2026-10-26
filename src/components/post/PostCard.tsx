@@ -1,16 +1,15 @@
 import { useState } from "react";
 import "./PostItem.css";
-import { useLikes } from "../hooks/useLikes";
+import { useLikes } from "../../hooks/useLikes";
 import { useNavigate } from "react-router-dom";
-import { toTimeOrDate } from "../utils/dateUtils";
-import type { Post } from "../types/post";
-import { isAxiosError } from "axios";
-import { getProfileImageUrl } from "../utils/imageUtils";
+import { toTimeOrDate } from "../../utils/dateUtils";
+import type { Post } from "../../types/post";
+import { getErrorMessage } from "../../utils/errorUtils";
+import Avatar from "../ui/Avatar";
 
 interface Props {
   post: Post;
   isLiked: boolean;
-  // profilePicture
 }
 const PostCard = ({ post, isLiked }: Props) => {
   const [liked, setLiked] = useState(isLiked);
@@ -20,10 +19,8 @@ const PostCard = ({ post, isLiked }: Props) => {
 
   return (
     <div className="post-card">
-      <img
-        className="profile-picture"
-        src={getProfileImageUrl(post.author.profileImageUrl)}
-        alt="Profile Picture"
+      <Avatar
+        user={post.author}
         onClick={() => {
           navigate(`/profile/${post.author.id}`);
         }}
@@ -55,13 +52,7 @@ const PostCard = ({ post, isLiked }: Props) => {
                   }
                   setLiked(!liked);
                 } catch (err: unknown) {
-                  if (isAxiosError(err)) {
-                    alert(
-                      err.response?.data?.message ?? "Failed to like post card",
-                    );
-                  } else {
-                    alert("Failed to like post card");
-                  }
+                  alert(getErrorMessage(err, "Failed to like post card"));
                 }
               }}
             >

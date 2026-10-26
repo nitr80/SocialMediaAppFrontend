@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { getAllCommentsByPostId as getAllCommentsByPostIdApi } from "../api/commentsApi";
 import { createComment as createCommentApi } from "../api/commentsApi";
 import type { Comment } from "../types/comment";
-import { isAxiosError } from "axios";
+import { getErrorMessage } from "../utils/errorUtils";
 
 export const useComments = () => {
   const [error, setError] = useState<string | null>(null);
@@ -16,11 +16,7 @@ export const useComments = () => {
         const res = await getAllCommentsByPostIdApi(postId);
         return res.data;
       } catch (err: unknown) {
-        if (isAxiosError(err)) {
-          setError(err.response?.data?.message || "Failed to load comments");
-        } else {
-          setError("Failed to load comments");
-        }
+        setError(getErrorMessage(err, "Failed to load comments"));
         throw err;
       } finally {
         setLoading(false);
@@ -36,11 +32,7 @@ export const useComments = () => {
       const res = await createCommentApi({ content }, postId);
       return res.data;
     } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(err.response?.data?.message || "Failed to create comment");
-      } else {
-        setError("Failed to create comment");
-      }
+      setError(getErrorMessage(err, "Failed to create comment"));
       throw err;
     } finally {
       setLoading(false);

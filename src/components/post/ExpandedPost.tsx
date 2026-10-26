@@ -1,18 +1,17 @@
 import { useState } from "react";
-import { useLikes } from "../hooks/useLikes";
-import { toTimeOrDate } from "../utils/dateUtils";
+import { useLikes } from "../../hooks/useLikes";
+import { toTimeOrDate } from "../../utils/dateUtils";
 
 import "./ExpandedPost.css";
 import "./PostItem.css";
-import type { Post } from "../types/post";
+import type { Post } from "../../types/post";
 import { useNavigate } from "react-router-dom";
-import { isAxiosError } from "axios";
-import { getProfileImageUrl } from "../utils/imageUtils";
+import { getErrorMessage } from "../../utils/errorUtils";
+import Avatar from "../ui/Avatar";
 
 interface Props {
   post: Post;
   isLiked: boolean;
-  // profilePicture
 }
 
 const ExpandedPost = ({ post, isLiked }: Props) => {
@@ -24,10 +23,8 @@ const ExpandedPost = ({ post, isLiked }: Props) => {
 
   return (
     <div className="expanded-post-container">
-      <img
-        className="profile-picture"
-        src={getProfileImageUrl(post.author.profileImageUrl)}
-        alt="Profile Picture"
+      <Avatar
+        user={post.author}
         onClick={() => {
           navigate(`/profile/${post.author.id}`);
         }}
@@ -51,13 +48,7 @@ const ExpandedPost = ({ post, isLiked }: Props) => {
                 }
                 setLiked(!liked);
               } catch (err: unknown) {
-                if (isAxiosError(err)) {
-                  alert(
-                    err.response?.data?.message ?? "Failed to like post card",
-                  );
-                } else {
-                  alert("Failed to like post card");
-                }
+                alert(getErrorMessage(err, "Failed to like post card"));
               }
             }}
           >

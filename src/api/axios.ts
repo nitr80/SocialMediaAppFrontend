@@ -1,12 +1,13 @@
 import axios from "axios";
 import { refreshToken } from "./authService";
 import { useAuthStore } from "../store/authStore";
+import { API_URL } from "../config/env";
 
 const api = axios.create({
   // baseURL: "http://localhost:8080",
   // baseURL: "http://3.72.17.3:80",
   // baseURL: "http://3.72.17.3:8080",
-  baseURL: "http://localhost:5226",
+  baseURL: API_URL,
   // withCredentials: true,
 });
 
@@ -27,7 +28,11 @@ api.interceptors.response.use(
     console.log("Interceptor hit:", error.config.url);
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry && originalRequest.url !== "/Auth/Refresh") {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      originalRequest.url !== "/Auth/Refresh"
+    ) {
       console.log("Trying refresh");
       originalRequest._retry = true;
 

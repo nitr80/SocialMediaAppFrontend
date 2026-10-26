@@ -3,16 +3,15 @@ import { useUsers } from "../hooks/useUsers";
 import type { User } from "../types/user";
 import "./UserSearchArea.css";
 import { useNavigate } from "react-router";
+import { getProfileImageUrl } from "../utils/imageUtils";
 
 const UserSearchArea = () => {
-  const { userLoading, searchUsername } = useUsers();
+  const { loading, searchUsername } = useUsers();
 
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState<User[]>([]);
-  
-  const navigate = useNavigate();
 
-  const API_URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -35,22 +34,21 @@ const UserSearchArea = () => {
         aria-label="Search users"
       />
 
-      {!userLoading && searchResults.map((user) => (
-        <div className="user-search-result" onClick={() => (navigate(`/profile/${user.id}`))}>
-          <img
-            className="profile-picture"
-            src={
-              user.profileImageUrl
-                ? `${API_URL}${user.profileImageUrl}`
-                : "/user.png"
-            }
-            alt={`${user.username}'s profile`}
-          />
-          <span>{user.username}</span>
-        </div>
-      ))}
-      {userLoading && <p>Loading...</p>}
-
+      {!loading &&
+        searchResults.map((user) => (
+          <div
+            className="user-search-result"
+            onClick={() => navigate(`/profile/${user.id}`)}
+          >
+            <img
+              className="profile-picture"
+              src={getProfileImageUrl(user.profileImageUrl)}
+              alt={`${user.username}'s profile`}
+            />
+            <span>{user.username}</span>
+          </div>
+        ))}
+      {loading && <p>Loading...</p>}
     </div>
   );
 };

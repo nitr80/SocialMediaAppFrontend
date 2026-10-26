@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import {
-  followUserApi,
-  getFollowingStatusApi,
-  unfollowUserApi,
+  followUser as followUserApi,
+  getFollowingStatus as getFollowingStatusApi,
+  unfollowUser as unfollowUserApi,
 } from "../api/followsApi";
 import { isAxiosError } from "axios";
 

@@ -6,21 +6,23 @@ import { useAuthStore } from "../store/authStore";
 export const useAuth = () => {
   const { accessToken: token, user, setAuth, logout } = useAuthStore();
 
-  const register = useCallback(async (
-    username: string,
-    email: string,
-    password: string,
-  ) => {
-    const res = await registerApi({ username, email, password });
+  const register = useCallback(
+    async (username: string, email: string, password: string) => {
+      const res = await registerApi({ username, email, password });
 
-    setAuth(res.data.accessToken, res.data.refreshToken, res.data.user);
-  }, [setAuth]);
+      setAuth(res.data.accessToken, res.data.refreshToken, res.data.user);
+    },
+    [setAuth],
+  );
 
-  const login = useCallback(async (username: string, password: string) => {
-    const res = await loginApi({ username, password });
+  const login = useCallback(
+    async (username: string, password: string) => {
+      const res = await loginApi({ username, password });
 
-    setAuth(res.data.accessToken, res.data.refreshToken, res.data.user);
-  }, [setAuth]);
+      setAuth(res.data.accessToken, res.data.refreshToken, res.data.user);
+    },
+    [setAuth],
+  );
 
   const logoutAsync = useCallback(async () => {
     await logoutApi();

@@ -84,8 +84,7 @@
   color: rgb(106, 106, 255);
 }
 
-.logout-container
-{
+.logout-container {
   display: flex;
   justify-content: space-between;
 }

@@ -9,6 +9,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useFollows } from "../hooks/useFollows";
 import { isAxiosError } from "axios";
+import { getProfileImageUrl } from "../utils/imageUtils";
 
 interface Props {
   user: User;
@@ -33,8 +34,6 @@ const ProfileCard = ({ user }: Props) => {
   const isCurrentUser = useAuthStore.getState().user?.id === newUser.id;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchFollowingStatus = async () => {
@@ -92,11 +91,7 @@ const ProfileCard = ({ user }: Props) => {
       >
         <img
           className="profile-picture-big"
-          src={
-            newUser.profileImageUrl
-              ? `${API_URL}${newUser.profileImageUrl}`
-              : "/user.png"
-          }
+          src={getProfileImageUrl(newUser.profileImageUrl)}
           alt="Profile Picture"
         />
         {isCurrentUser && <div className="profile-picture-overlay">Edit</div>}

@@ -1,11 +1,11 @@
 .user-search-result {
-    display: flex;
-    align-items:center;
-    justify-content: flex-start;
-    gap: 5px;
-    padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  padding: 2px;
 }
 
 .user-search-result:hover {
-    cursor: pointer;
+  cursor: pointer;
 }

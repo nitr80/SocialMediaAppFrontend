@@ -41,8 +41,7 @@
   box-sizing: border-box;
 }
 
-.profile-button-container
-{
+.profile-button-container {
   position: fixed;
   top: 0;
   left: 65%;
@@ -55,9 +54,9 @@
   box-sizing: border-box;
 }
 
-.profile-button{
+.profile-button {
   display: flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
 
   height: 50px;
@@ -67,14 +66,12 @@
   border-width: 0px;
 }
 
-.profile-button img{
-  height:40px;
+.profile-button img {
+  height: 40px;
   width: 40px;
 }
 
-
-.user-search-area-container
-{
+.user-search-area-container {
   position: fixed;
   top: 80px;
   left: 65%;

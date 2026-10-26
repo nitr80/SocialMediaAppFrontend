@@ -9,7 +9,7 @@ import { useAuthStore } from "../store/authStore";
 import UserSearchArea from "../components/UserSearchArea";
 
 const FeedPage = () => {
-  const { postLoading, loadAllPosts } = usePosts();
+  const { loading, loadAllPosts } = usePosts();
   const { getAllLiked } = useLikes();
   const [posts, setPosts] = useState<Post[]>([]);
   const [likedPosts, setLikedPosts] = useState<number[]>([]);
@@ -29,7 +29,7 @@ const FeedPage = () => {
     fetchPosts();
   }, [location.key, loadAllPosts, getAllLiked]);
 
-  if (postLoading) {
+  if (loading) {
     return (
       <div className="page">
         <p>Loading...</p>

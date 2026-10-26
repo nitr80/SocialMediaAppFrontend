@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import BackToFeedButton from "../components/BackToFeedButton";
 
 const ProfilePage = () => {
-  const { getUserById, userLoading } = useUsers();
+  const { getUserById, loading } = useUsers();
   const [user, setUser] = useState<User>();
 
   const { id } = useParams();
@@ -33,7 +33,7 @@ const ProfilePage = () => {
     return <div>Invalid ID</div>;
   }
 
-  if (userLoading || !user) {
+  if (loading || !user) {
     return (
       <div className="page">
         <p>Loading...</p>

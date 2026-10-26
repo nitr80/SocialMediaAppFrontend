@@ -6,8 +6,8 @@ import type { Post } from "../types/post";
 import { isAxiosError } from "axios";
 
 export const usePosts = () => {
-  const [postError, setError] = useState<string | null>(null);
-  const [postLoading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const loadAllPosts = useCallback(async (): Promise<Post[]> => {
     setLoading(true);
@@ -65,5 +65,5 @@ export const usePosts = () => {
     }
   }, []);
 
-  return { postError, postLoading, loadAllPosts, createPost, getPostById };
+  return { error, loading, loadAllPosts, createPost, getPostById };
 };

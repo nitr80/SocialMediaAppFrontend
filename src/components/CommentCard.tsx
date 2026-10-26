@@ -5,6 +5,7 @@ import "./PostItem.css";
 import { likeComment, unlikeComment } from "../api/commentLikesApi";
 import { useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";
+import { getProfileImageUrl } from "../utils/imageUtils";
 
 interface Props {
   comment: Comment;
@@ -18,17 +19,11 @@ const CommentCard = ({ comment, isLiked }: Props) => {
 
   const navigate = useNavigate();
 
-  const API_URL = import.meta.env.VITE_API_URL;
-
   return (
     <div className="post-card">
       <img
         className="profile-picture"
-        src={
-          comment.author.profileImageUrl
-            ? `${API_URL}${comment.author.profileImageUrl}`
-            : "/user.png"
-        }
+        src={getProfileImageUrl(comment.author.profileImageUrl)}
         alt="Profile Picture"
         onClick={() => {
           navigate(`/profile/${comment.author.id}`);

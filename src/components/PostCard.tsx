@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toTimeOrDate } from "../utils/dateUtils";
 import type { Post } from "../types/post";
 import { isAxiosError } from "axios";
+import { getProfileImageUrl } from "../utils/imageUtils";
 
 interface Props {
   post: Post;
@@ -17,17 +18,11 @@ const PostCard = ({ post, isLiked }: Props) => {
   const { likePost, unlikePost } = useLikes();
   const navigate = useNavigate();
 
-  const API_URL = import.meta.env.VITE_API_URL;
-
   return (
     <div className="post-card">
       <img
         className="profile-picture"
-        src={
-          post.author.profileImageUrl
-            ? `${API_URL}${post.author.profileImageUrl}`
-            : "/user.png"
-        }
+        src={getProfileImageUrl(post.author.profileImageUrl)}
         alt="Profile Picture"
         onClick={() => {
           navigate(`/profile/${post.author.id}`);

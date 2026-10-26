@@ -3,15 +3,15 @@ import {
   addOrUpdateBio as addOrUpdateBioApi,
   addOrUpdateProfilePicture as addOrUpdateProfilePictureApi,
   getUserById as getUserByIdApi,
-  searchUsernameApi,
+  searchUsername as searchUsernameApi,
 } from "../api/usersApi";
 import type { User } from "../types/user";
 import type { Bio } from "../types/bio";
 import { isAxiosError } from "axios";
 
 export const useUsers = () => {
-  const [userError, setError] = useState<string | null>(null);
-  const [userLoading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getUserById = useCallback(async (id: number): Promise<User | null> => {
     setError(null);
@@ -44,22 +44,25 @@ export const useUsers = () => {
     }
   }, []);
 
-  const addOrUpdateProfilePicture = useCallback(async (image: FormData): Promise<string | null> => {
-    setError(null);
-    try {
-      const res = await addOrUpdateProfilePictureApi(image);
-      return res.data;
-    } catch (err: unknown) {
-      if (isAxiosError(err)) {
-        setError(
-          err.response?.data?.message || "Failed to update profile picture",
-        );
-      } else {
-        setError("Failed to update profile picture");
+  const addOrUpdateProfilePicture = useCallback(
+    async (image: FormData): Promise<string | null> => {
+      setError(null);
+      try {
+        const res = await addOrUpdateProfilePictureApi(image);
+        return res.data;
+      } catch (err: unknown) {
+        if (isAxiosError(err)) {
+          setError(
+            err.response?.data?.message || "Failed to update profile picture",
+          );
+        } else {
+          setError("Failed to update profile picture");
+        }
+        return null;
       }
-      return null;
-    }
-  }, []);
+    },
+    [],
+  );
 
   const searchUsername = useCallback(
     async (username: string): Promise<User[] | null> => {
@@ -83,8 +86,8 @@ export const useUsers = () => {
   );
 
   return {
-    userError,
-    userLoading,
+    error,
+    loading,
     getUserById,
     addOrUpdateBio,
     addOrUpdateProfilePicture,

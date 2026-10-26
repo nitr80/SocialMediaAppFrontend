@@ -1,4 +1,4 @@
-import "./AuthButton.css"
+import "./AuthButton.css";
 
 interface Props {
   buttonText: string;
@@ -8,7 +8,9 @@ interface Props {
 const AuthButton = ({ buttonText, onClick }: Props) => {
   return (
     <div className="auth-button-container">
-      <button className="auth-button" onClick={onClick}>{buttonText}</button>
+      <button className="auth-button" onClick={onClick}>
+        {buttonText}
+      </button>
     </div>
   );
 };

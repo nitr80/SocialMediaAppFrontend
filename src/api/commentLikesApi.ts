@@ -1,17 +1,17 @@
 import api from "./axios";
 
 export const getLiked = (commentId: number) => {
-  return api.get(`Comments/${commentId}/Likes`);
+  return api.get<boolean>(`Comments/${commentId}/Likes`);
 };
 
 export const getAllLiked = (postId: number) => {
-  return api.get(`Comments/me/${postId}/Likes`);
+  return api.get<number[]>(`Comments/me/${postId}/Likes`);
 };
 
 export const likeComment = (commentId: number) => {
-    return api.post(`Comments/${commentId}/Likes`)
+  return api.post<void>(`Comments/${commentId}/Likes`);
 };
 
 export const unlikeComment = (commentId: number) => {
-    return api.delete(`Comments/${commentId}/Likes`)
+  return api.delete<void>(`Comments/${commentId}/Likes`);
 };

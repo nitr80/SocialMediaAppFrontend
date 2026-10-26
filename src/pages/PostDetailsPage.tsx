@@ -14,7 +14,7 @@ import BackToFeedButton from "../components/BackToFeedButton";
 import { isAxiosError } from "axios";
 
 const PostDetailsPage = () => {
-  const { postLoading, getPostById } = usePosts();
+  const { loading: postLoading, getPostById } = usePosts();
   const { getLiked } = useLikes();
   const { loading, getAllCommentsByPostId, createComment } = useComments();
   const { getAllLikedComments } = useCommentLikes();

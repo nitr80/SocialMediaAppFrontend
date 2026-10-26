@@ -1,10 +1,11 @@
 import type { Bio } from "../types/bio";
+import type { User } from "../types/user";
 import api from "./axios";
 
 const usersUrl = "/Users";
 
 export const getUserById = (id: number) => {
-  return api.get(`${usersUrl}/${id}`);
+  return api.get<User>(`${usersUrl}/${id}`);
 };
 
 export const addOrUpdateBio = (bio: Bio) => {
@@ -12,9 +13,9 @@ export const addOrUpdateBio = (bio: Bio) => {
 };
 
 export const addOrUpdateProfilePicture = (image: FormData) => {
-  return api.patch(`${usersUrl}/me/ProfilePicture`, image);
+  return api.patch<string>(`${usersUrl}/me/ProfilePicture`, image);
 };
 
-export const searchUsernameApi = (username: string) => {
-  return api.get(`${usersUrl}?search=${username}`);
+export const searchUsername = (username: string) => {
+  return api.get<User[]>(`${usersUrl}?search=${username}`);
 };

@@ -4,11 +4,7 @@ import { useAuthStore } from "../store/authStore";
 import { API_URL } from "../config/env";
 
 const api = axios.create({
-  // baseURL: "http://localhost:8080",
-  // baseURL: "http://3.72.17.3:80",
-  // baseURL: "http://3.72.17.3:8080",
   baseURL: API_URL,
-  // withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
@@ -23,31 +19,26 @@ api.interceptors.request.use((config) => {
 
 api.interceptors.response.use(
   (response) => response,
-
   async (error) => {
-    console.log("Interceptor hit:", error.config.url);
     const originalRequest = error.config;
 
     if (
       error.response?.status === 401 &&
+      originalRequest &&
       !originalRequest._retry &&
       originalRequest.url !== "/Auth/Refresh"
     ) {
-      console.log("Trying refresh");
       originalRequest._retry = true;
 
       try {
         const newAccessToken = await refreshToken();
-
-        console.log("Refresh succeeded");
 
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
         return api(originalRequest);
       } catch {
         useAuthStore.getState().logout();
-        console.log("Refresh failed");
-        window.location.href = "/";
+        return Promise.reject(error);
       }
     }
 

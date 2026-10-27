@@ -25,6 +25,7 @@ const CommentInputField = ({ text, setText, onSendClicked }: Props) => {
           type="button"
           className="send-button"
           aria-label="Post comment"
+          disabled={!text.trim()}
           onClick={onSendClicked}
         >
           <img src="/send_icon.png" alt="" />

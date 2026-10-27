@@ -13,6 +13,7 @@ import { useCommentLikes } from "../hooks/useCommentLikes";
 import BackToFeedButton from "../components/layout/BackToFeedButton";
 import { getErrorMessage } from "../utils/errorUtils";
 import PageLoader from "../components/ui/PageLoader";
+import StatusMessage from "../components/ui/StatusMessage";
 
 const PostDetailsPage = () => {
   const { loading: postLoading, getPostById } = usePosts();
@@ -25,6 +26,8 @@ const PostDetailsPage = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentContent, setCommentContent] = useState("");
   const [likedCommentIds, setLikedCommentIds] = useState<number[]>([]);
+  const [commentError, setCommentError] = useState<string | null>(null);
+  const [isCreatingComment, setIsCreatingComment] = useState(false);
 
   const { id } = useParams();
   const postId = Number(id);
@@ -55,12 +58,20 @@ const PostDetailsPage = () => {
   }, [postId, id, fetchComments, getPostById, getLiked]);
 
   const handleCommentCreation = async () => {
+    if (loading || isCreatingComment || !commentContent.trim()) {
+      return;
+    }
+
+    setCommentError(null);
+    setIsCreatingComment(true);
     try {
       await createComment(commentContent, postId);
       setCommentContent("");
-      fetchComments();
+      await fetchComments();
     } catch (err: unknown) {
-      alert(getErrorMessage(err, "Failed to create comment"));
+      setCommentError(getErrorMessage(err, "Failed to create comment"));
+    } finally {
+      setIsCreatingComment(false);
     }
   };
 
@@ -93,9 +104,13 @@ const PostDetailsPage = () => {
 
         <CommentInputField
           text={commentContent}
-          setText={setCommentContent}
+          setText={(v) => {
+            setCommentContent(v);
+            setCommentError(null);
+          }}
           onSendClicked={handleCommentCreation}
         ></CommentInputField>
+        <StatusMessage type="error" message={commentError} />
       </div>
     );
   }

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useFollows } from "../../hooks/useFollows";
 import { getErrorMessage } from "../../utils/errorUtils";
 import Avatar from "../ui/Avatar";
+import StatusMessage from "../ui/StatusMessage";
 
 interface Props {
   user: User;
@@ -25,10 +26,20 @@ const ProfileCard = ({ user }: Props) => {
   const [newUser, setUser] = useState(user);
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
   const [followText, setFollowText] = useState<string>("Follow");
+  const [bioError, setBioError] = useState<string | null>(null);
+  const [bioPending, setBioPending] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [logoutPending, setLogoutPending] = useState(false);
+  const [followError, setFollowError] = useState<string | null>(null);
 
   const { getUserById, addOrUpdateBio, addOrUpdateProfilePicture } = useUsers();
   const { logoutAsync } = useAuth();
-  const { getFollowingStatus, followUser, unfollowUser } = useFollows();
+  const {
+    loading: followLoading,
+    getFollowingStatus,
+    followUser,
+    unfollowUser,
+  } = useFollows();
   const navigate = useNavigate();
 
   const isCurrentUser = useAuthStore.getState().user?.id === newUser.id;
@@ -117,20 +128,25 @@ const ProfileCard = ({ user }: Props) => {
             <button
               type="button"
               className="edit-bio-text"
+              disabled={bioPending}
               onClick={async () => {
+                setBioError(null);
                 if (!canEditBio) {
                   setCanEditBio(true);
                   setEditBioText(SAVE_BIO_TEXT);
-                } else {
+                  return;
+                }
+
+                setBioPending(true);
+                const bio: Bio = { bio: bioText };
+                try {
+                  await addOrUpdateBio(bio);
                   setCanEditBio(false);
                   setEditBioText(EDIT_BIO_TEXT);
-
-                  const bio: Bio = { bio: bioText };
-                  try {
-                    await addOrUpdateBio(bio);
-                  } catch (err: unknown) {
-                    alert(getErrorMessage(err, "Failed to update bio"));
-                  }
+                } catch (err: unknown) {
+                  setBioError(getErrorMessage(err, "Failed to update bio"));
+                } finally {
+                  setBioPending(false);
                 }
               }}
             >
@@ -139,12 +155,16 @@ const ProfileCard = ({ user }: Props) => {
             <button
               type="button"
               className="edit-bio-text"
+              disabled={logoutPending}
               onClick={async () => {
+                setAuthError(null);
+                setLogoutPending(true);
                 try {
                   await logoutAsync();
                   navigate("/");
                 } catch (err: unknown) {
-                  alert(getErrorMessage(err, "Failed to logout"));
+                  setAuthError(getErrorMessage(err, "Failed to logout"));
+                  setLogoutPending(false);
                 }
               }}
             >
@@ -152,20 +172,30 @@ const ProfileCard = ({ user }: Props) => {
             </button>
           </div>
         )}
+        {isCurrentUser && (
+          <>
+            <StatusMessage type="error" message={bioError} />
+            <StatusMessage type="error" message={authError} />
+          </>
+        )}
         {!isCurrentUser && (
           <div className="logout-container">
             <button
               type="button"
               className="edit-bio-text"
               aria-pressed={isFollowing ?? undefined}
+              disabled={followLoading}
               onClick={async () => {
+                setFollowError(null);
                 if (isFollowing) {
                   try {
                     await unfollowUser(newUser.id);
                     setFollowText("Follow");
                     setIsFollowing(false);
                   } catch (err: unknown) {
-                    alert(getErrorMessage(err, "Failed to unfollow user"));
+                    setFollowError(
+                      getErrorMessage(err, "Failed to unfollow user"),
+                    );
                   }
                 } else {
                   try {
@@ -173,7 +203,9 @@ const ProfileCard = ({ user }: Props) => {
                     setFollowText("Unfollow");
                     setIsFollowing(true);
                   } catch (err: unknown) {
-                    alert(getErrorMessage(err, "Failed to follow user"));
+                    setFollowError(
+                      getErrorMessage(err, "Failed to follow user"),
+                    );
                   }
                 }
               }}
@@ -182,6 +214,7 @@ const ProfileCard = ({ user }: Props) => {
             </button>
           </div>
         )}
+        {!isCurrentUser && <StatusMessage type="error" message={followError} />}
       </div>
     </div>
   );

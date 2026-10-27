@@ -5,12 +5,17 @@ import { useAuth } from "../hooks/useAuth";
 import "./AuthPages.css";
 import { Link, useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../utils/errorUtils";
+import StatusMessage from "../components/ui/StatusMessage";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [secondPassword, setSecondPassword] = useState("");
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { register } = useAuth();
 
@@ -77,48 +82,74 @@ const RegisterPage = () => {
           <DataInputField
             label="Username:"
             value={username}
-            setValue={setUsername}
+            setValue={(v) => {
+              setUsername(v);
+              setFormError(null);
+            }}
             autoComplete="username"
           ></DataInputField>
           <DataInputField
             label="Email:"
             value={email}
-            setValue={setEmail}
+            setValue={(v) => {
+              setEmail(v);
+              setEmailError(null);
+              setFormError(null);
+            }}
             type="email"
             autoComplete="email"
           ></DataInputField>
+          <StatusMessage type="error" message={emailError} />
           <DataInputField
             label="Password:"
             value={password}
-            setValue={setPassword}
+            setValue={(v) => {
+              setPassword(v);
+              setPasswordError(null);
+              setFormError(null);
+            }}
             type="password"
             autoComplete="new-password"
           ></DataInputField>
           <DataInputField
             label="Password (Again):"
             value={secondPassword}
-            setValue={setSecondPassword}
+            setValue={(v) => {
+              setSecondPassword(v);
+              setPasswordError(null);
+              setFormError(null);
+            }}
             type="password"
             autoComplete="new-password"
           ></DataInputField>
+          <StatusMessage type="error" message={passwordError} />
+          <StatusMessage type="error" message={formError} />
           <AuthButton
             buttonText="Register"
+            disabled={isSubmitting}
             onClick={async () => {
-              const passwordError = validatePassword();
-              const emailError = validateEmail();
-              if (passwordError != null) {
-                alert(passwordError);
+              setPasswordError(null);
+              setEmailError(null);
+              setFormError(null);
+
+              const passwordErr = validatePassword();
+              const emailErr = validateEmail();
+              if (passwordErr != null) {
+                setPasswordError(passwordErr);
                 return;
               }
-              if (emailError != null) {
-                alert(emailError);
+              if (emailErr != null) {
+                setEmailError(emailErr);
                 return;
               }
+
+              setIsSubmitting(true);
               try {
                 await register(username, email, password);
                 navigate("/feed", { replace: true });
               } catch (err: unknown) {
-                alert(getErrorMessage(err, "Registering failed!"));
+                setFormError(getErrorMessage(err, "Registering failed!"));
+                setIsSubmitting(false);
               }
             }}
           ></AuthButton>

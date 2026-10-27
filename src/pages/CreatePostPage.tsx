@@ -5,9 +5,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { usePosts } from "../hooks/usePosts";
 import BackToFeedButton from "../components/layout/BackToFeedButton";
 import { getErrorMessage } from "../utils/errorUtils";
+import StatusMessage from "../components/ui/StatusMessage";
 
 const CreatePostPage = () => {
   const [text, setText] = useState("");
+  const [createError, setCreateError] = useState<string | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
   const label = "Write a post:";
   const postString = "Post";
 
@@ -22,18 +25,26 @@ const CreatePostPage = () => {
         <PostContentTextArea
           label={label}
           text={text}
-          setText={setText}
+          setText={(v) => {
+            setText(v);
+            setCreateError(null);
+          }}
         ></PostContentTextArea>
+        <StatusMessage type="error" message={createError} />
         <AuthButton
           buttonText={postString}
+          disabled={isCreating || text.trim().length === 0}
           onClick={async () => {
+            setCreateError(null);
+            setIsCreating(true);
             try {
               await createPost(text);
               navigate("/feed", {
                 state: { from: location.pathname },
               });
             } catch (err: unknown) {
-              alert(getErrorMessage(err, "Failed to create post"));
+              setCreateError(getErrorMessage(err, "Failed to create post"));
+              setIsCreating(false);
             }
           }}
         ></AuthButton>

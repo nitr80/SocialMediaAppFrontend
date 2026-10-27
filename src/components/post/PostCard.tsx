@@ -6,6 +6,7 @@ import { toTimeOrDate } from "../../utils/dateUtils";
 import type { Post } from "../../types/post";
 import { getErrorMessage } from "../../utils/errorUtils";
 import Avatar from "../ui/Avatar";
+import StatusMessage from "../ui/StatusMessage";
 
 interface Props {
   post: Post;
@@ -14,6 +15,7 @@ interface Props {
 const PostCard = ({ post, isLiked }: Props) => {
   const [liked, setLiked] = useState(isLiked);
   const [localLikeCount, setLocalLikeCount] = useState(post.likeCount);
+  const [likeError, setLikeError] = useState<string | null>(null);
   const { loading, likePost, unlikePost } = useLikes();
 
   return (
@@ -40,10 +42,9 @@ const PostCard = ({ post, isLiked }: Props) => {
               className="like-button"
               aria-pressed={liked}
               aria-label={liked ? "Unlike post" : "Like post"}
+              disabled={loading}
               onClick={async () => {
-                if (loading) {
-                  return;
-                }
+                setLikeError(null);
 
                 try {
                   if (!liked) {
@@ -55,7 +56,7 @@ const PostCard = ({ post, isLiked }: Props) => {
                   }
                   setLiked((prevLiked) => !prevLiked);
                 } catch (err: unknown) {
-                  alert(getErrorMessage(err, "Failed to like post card"));
+                  setLikeError(getErrorMessage(err, "Failed to like post"));
                 }
               }}
             >
@@ -72,6 +73,7 @@ const PostCard = ({ post, isLiked }: Props) => {
             <p className="comment-count">{post.commentCount}</p>
           </div>
         </div>
+        <StatusMessage type="error" message={likeError} />
       </div>
     </div>
   );

@@ -5,10 +5,13 @@ import { useAuth } from "../hooks/useAuth";
 import "./AuthPages.css";
 import { Link, useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../utils/errorUtils";
+import StatusMessage from "../components/ui/StatusMessage";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { login } = useAuth();
 
@@ -32,14 +35,19 @@ const LoginPage = () => {
             type="password"
             autoComplete="current-password"
           ></DataInputField>
+          <StatusMessage type="error" message={error} />
           <AuthButton
             buttonText="Login"
+            disabled={isSubmitting}
             onClick={async () => {
+              setError(null);
+              setIsSubmitting(true);
               try {
                 await login(username, password);
                 navigate("/feed", { replace: true });
               } catch (err: unknown) {
-                alert(getErrorMessage(err, "Login failed!"));
+                setError(getErrorMessage(err, "Login failed!"));
+                setIsSubmitting(false);
               }
             }}
           ></AuthButton>

@@ -6,6 +6,7 @@ import { useCommentLikes } from "../../hooks/useCommentLikes";
 import { Link } from "react-router-dom";
 import { getErrorMessage } from "../../utils/errorUtils";
 import Avatar from "../ui/Avatar";
+import StatusMessage from "../ui/StatusMessage";
 
 interface Props {
   comment: Comment;
@@ -15,6 +16,7 @@ interface Props {
 const CommentCard = ({ comment, isLiked }: Props) => {
   const [liked, setLiked] = useState(isLiked);
   const [localLikeCount, setLocalLikeCount] = useState(comment.likeCount);
+  const [likeError, setLikeError] = useState<string | null>(null);
 
   const { loading, likeComment, unlikeComment } = useCommentLikes();
 
@@ -37,10 +39,9 @@ const CommentCard = ({ comment, isLiked }: Props) => {
             className="like-button"
             aria-pressed={liked}
             aria-label={liked ? "Unlike comment" : "Like comment"}
+            disabled={loading}
             onClick={async () => {
-              if (loading) {
-                return;
-              }
+              setLikeError(null);
               try {
                 if (!liked) {
                   await likeComment(comment.id);
@@ -51,7 +52,7 @@ const CommentCard = ({ comment, isLiked }: Props) => {
                 }
                 setLiked((prevLiked) => !prevLiked);
               } catch (err: unknown) {
-                alert(getErrorMessage(err, "Failed to like post card"));
+                setLikeError(getErrorMessage(err, "Failed to like comment"));
               }
             }}
           >
@@ -62,6 +63,7 @@ const CommentCard = ({ comment, isLiked }: Props) => {
           </button>
           <p className="like-count">{localLikeCount}</p>
         </div>
+        <StatusMessage type="error" message={likeError} />
       </div>
     </div>
   );

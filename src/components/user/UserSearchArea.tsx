@@ -4,21 +4,59 @@ import type { User } from "../../types/user";
 import "./UserSearchArea.css";
 import { Link } from "react-router-dom";
 import Avatar from "../ui/Avatar";
+import PageLoader from "../ui/PageLoader";
 
 const UserSearchArea = () => {
-  const { loading, searchUsername } = useUsers();
+  const { searchUsername } = useUsers();
 
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [searchResults, setSearchResults] = useState<User[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [query]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    let isCurrent = true;
+
     const fetchUsers = async () => {
-      const users = await searchUsername(query);
-      setSearchResults(users ? users : []);
+      setIsSearching(true);
+      try {
+        const users = await searchUsername(debouncedQuery, controller.signal);
+        if (!isCurrent) {
+          return;
+        }
+        setSearchResults(users ? users : []);
+      } catch (error) {
+        if (!isCurrent || controller.signal.aborted) {
+          return;
+        }
+
+        console.error("Failed to search users:", error);
+        setSearchResults([]);
+      } finally {
+        if (isCurrent) {
+          setIsSearching(false);
+        }
+      }
     };
 
     fetchUsers();
-  }, [query, searchUsername]);
+
+    return () => {
+      isCurrent = false;
+      controller.abort();
+    };
+  }, [debouncedQuery, searchUsername]);
 
   return (
     <div>
@@ -32,7 +70,7 @@ const UserSearchArea = () => {
         aria-label="Search users"
       />
 
-      {!loading &&
+      {!isSearching &&
         searchResults.map((user) => (
           <Link
             key={user.id}
@@ -44,7 +82,7 @@ const UserSearchArea = () => {
             <span>{user.username}</span>
           </Link>
         ))}
-      {loading && <p>Loading...</p>}
+      {isSearching && <PageLoader />}
     </div>
   );
 };

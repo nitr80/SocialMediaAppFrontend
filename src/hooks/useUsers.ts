@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { isAxiosError } from "axios";
 import {
   addOrUpdateBio as addOrUpdateBioApi,
   addOrUpdateProfilePicture as addOrUpdateProfilePictureApi,
@@ -51,13 +52,19 @@ export const useUsers = () => {
   );
 
   const searchUsername = useCallback(
-    async (username: string): Promise<User[] | null> => {
+    async (username: string, signal?: AbortSignal): Promise<User[] | null> => {
       setError(null);
       setLoading(true);
       try {
-        const res = await searchUsernameApi(username);
+        const res = await searchUsernameApi(username, signal);
         return res.data;
       } catch (err: unknown) {
+        if (
+          (isAxiosError(err) && err.code === "ERR_CANCELED") ||
+          (err instanceof Error && err.name === "CanceledError")
+        ) {
+          return null;
+        }
         setError(getErrorMessage(err, "Failed to search username"));
         return null;
       } finally {

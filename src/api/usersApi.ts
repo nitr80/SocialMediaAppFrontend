@@ -16,6 +16,6 @@ export const addOrUpdateProfilePicture = (image: FormData) => {
   return api.patch<string>(`${usersUrl}/me/ProfilePicture`, image);
 };
 
-export const searchUsername = (username: string) => {
-  return api.get<User[]>(`${usersUrl}?search=${username}`);
+export const searchUsername = (username: string, signal?: AbortSignal) => {
+  return api.get<User[]>(`${usersUrl}?search=${username}`, { signal });
 };

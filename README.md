@@ -10,13 +10,16 @@ A modern frontend for a social media application, built with **React and TypeScr
 - Automatic token refresh
 - Create and view posts
 - Like and unlike posts
+- Comment on posts
+- User profiles and follow/unfollow
+- User search with debounced requests
 - Client-side routing
 - REST API integration
 - Responsive user interface
 
 ## Tech Stack
 
-- **React**
+- **React 19**
 - **TypeScript**
 - **Vite**
 - **Zustand** – state management
@@ -27,9 +30,9 @@ A modern frontend for a social media application, built with **React and TypeScr
 
 Authentication is handled through the backend's JWT-based authentication system.
 
-The frontend manages authentication state using **Zustand** and communicates with the backend using **Axios**.
+The frontend manages authentication state using **Zustand** and persists tokens in `localStorage`. Tokens are attached to API requests via Axios interceptors, and expired access tokens are refreshed automatically using the refresh-token mechanism.
 
-Axios interceptors are used to attach authentication tokens to API requests and handle expired access tokens by requesting a new token through the refresh-token mechanism.
+**Security note:** Storing tokens in `localStorage` is convenient for a learning project but is vulnerable to XSS attacks. In production, HTTP-only Secure SameSite cookies would be a safer alternative.
 
 ## Running the Application
 

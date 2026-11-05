@@ -2,6 +2,10 @@ import type { Bio } from "../types/bio";
 import type { User } from "../types/user";
 import api from "./axios";
 
+interface SearchUsersParams {
+  search: string;
+}
+
 const usersUrl = "/Users";
 
 export const getUserById = (id: number) => {
@@ -17,5 +21,8 @@ export const addOrUpdateProfilePicture = (image: FormData) => {
 };
 
 export const searchUsername = (username: string, signal?: AbortSignal) => {
-  return api.get<User[]>(`${usersUrl}?search=${username}`, { signal });
+  const params: SearchUsersParams = {
+    search: username,
+  };
+  return api.get<User[]>(`${usersUrl}`, { params, signal });
 };

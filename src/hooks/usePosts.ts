@@ -4,26 +4,29 @@ import { createPost as createPostApi } from "../api/postsApi";
 import { getPostById as getPostByIdApi } from "../api/postsApi";
 import type { Post } from "../types/post";
 import { getErrorMessage } from "../utils/errorUtils";
+import type { PagedList } from "../types/pagedList";
 
 export const usePosts = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const loadAllPosts = useCallback(async (): Promise<Post[]> => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await getAllPostsApi();
+  const loadAllPosts = useCallback(
+    async (limit: number, cursor: string | null): Promise<PagedList<Post>> => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await getAllPostsApi(limit, cursor);
+        return res.data;
+      } catch (err: unknown) {
+        setError(getErrorMessage(err, "Failed to load posts"));
 
-      return res.data;
-    } catch (err: unknown) {
-      setError(getErrorMessage(err, "Failed to load posts"));
-
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
 
   const createPost = useCallback(async (content: string) => {
     setLoading(true);

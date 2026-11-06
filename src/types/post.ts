@@ -6,5 +6,6 @@ export interface Post {
   createdAt: string;
   likeCount: number;
   commentCount: number;
+  hasLiked: boolean;
   author: User;
 }

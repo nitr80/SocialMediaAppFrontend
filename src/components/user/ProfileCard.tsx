@@ -118,7 +118,7 @@ const ProfileCard = ({ user }: Props) => {
       </div>
       <div>
         <p className="user-title-big">{newUser.username}</p>
-        <p className="user-email-big">{newUser.email}</p>
+        {newUser.email && <p className="user-email-big">{newUser.email}</p>}
         {!canEditBio && <p className="user-bio">{bioText}</p>}
         {canEditBio && isCurrentUser && (
           <BioInputField text={bioText} setText={setBioText}></BioInputField>

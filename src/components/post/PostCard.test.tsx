@@ -22,6 +22,7 @@ describe("PostCard", () => {
     content: "Hello world",
     author: { id: 10, username: "author", email: "a@b.com" },
     likeCount: 5,
+    hasLiked: false,
     commentCount: 2,
     createdAt: new Date().toISOString(),
   };

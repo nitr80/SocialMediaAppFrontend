@@ -39,16 +39,43 @@ const RegisterPage = () => {
   function passwordIncludesSymbol() {
     return (
       password.includes("!") ||
-      password.includes("?") ||
-      password.includes("*") ||
+      password.includes("@") ||
+      password.includes("#") ||
+      password.includes("$") ||
+      password.includes("%") ||
+      password.includes("^") ||
       password.includes("&") ||
-      password.includes("#")
+      password.includes("*") ||
+      password.includes("(") ||
+      password.includes(")") ||
+      password.includes("-") ||
+      password.includes("+")
     );
   }
 
   function validatePassword() {
     if (password.length < 8) {
       return "Password must have at least 8 characters";
+    }
+
+    if (password.length > 72) {
+      return "Password must not exceed 72 characters";
+    }
+
+    if (password.toUpperCase() === password) {
+      return "Password must contain at least one lowercase letter";
+    }
+
+    if (password.toLowerCase() === password) {
+      return "Password must contain at least one uppercase letter";
+    }
+
+    if (password.trim() !== password) {
+      return "Password must not have leading or trailing spaces";
+    }
+
+    if (password.includes(" ")) {
+      return "Password must not contain spaces";
     }
 
     if (!passwordIncludesNumber()) {
@@ -59,7 +86,7 @@ const RegisterPage = () => {
       return "Password must contain at least one symbol";
     }
 
-    if (password != secondPassword) {
+    if (password !== secondPassword) {
       return "2 entered passwords do not match!";
     }
 
